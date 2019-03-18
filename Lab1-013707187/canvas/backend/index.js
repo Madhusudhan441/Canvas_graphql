@@ -49,7 +49,9 @@ app.use(function(req, res, next) {
     database: "canvas"
   });
   con.connect(function(err) {
-    if (err) throw err
+    if (err){
+      console.log(err)
+    } 
 });
 app.post('/login',function(req,res){
 
@@ -63,8 +65,10 @@ app.post('/login',function(req,res){
   console.log("Req Body : ",req.body);
  if(req.body.stufac==="faculty"){
   con.query("SELECT *  FROM facultydetails WHERE facultyid = "+JSON.stringify(req.body.username), function (err, result, fields) {
-    if (err) throw err;
-   
+    if (err){
+      console.log(err)
+    } 
+    console.log(result)
   
     result.filter(function(user){
       console.log(user.username,user.facultyid,req.body.username)
@@ -76,7 +80,8 @@ app.post('/login',function(req,res){
               'Content-Type' : 'text/plain'
           })
           console.log(user.username)
-          res.end(user.username);
+          res.send(user.username);
+          console.log("login done ")
        
       }
   })  
@@ -85,9 +90,9 @@ app.post('/login',function(req,res){
  }
  else{
   con.query("SELECT *  FROM studentdet WHERE studentid ="+JSON.stringify(req.body.username), function (err, result, fields) {
-    if (err) throw err;
+    if (err) {console.log(err)};
 
-
+    console.log(result)
     result.filter(function(user){
       console.log(user.studentid,user.password)
       if(user.studentid === req.body.username && user.password === req.body.password){
@@ -98,8 +103,15 @@ app.post('/login',function(req,res){
               'Content-Type' : 'text/plain'
           })
           console.log(user.username)
-          
+          console.log("login done ")
           res.end(user.username);
+         
+      }
+      else{
+        res.writeHead(400,{
+          'Content-Type' : 'text/plain'
+      })
+        res.end("Username and Password Not matched")
       }
   })
 
@@ -110,12 +122,12 @@ app.post('/signup',function(req,res){
   console.log(req.body)
   if(req.body.owner=="student"){
   con.query("INSERT INTO studentdet(studentid,username,password) VALUES(?,?,?)",[req.body.loginid,req.body.username,req.body.password], function (err, result, fields) {
-    if (err) throw err
+    if (err) {console.log(err)}
 });
   }
   else{
     con.query("INSERT INTO facultydetails(facultyid,username,password) VALUES(?,?,?)",[req.body.loginid,req.body.username,req.body.password], function (err, result, fields) {
-      if (err) throw err
+      if (err) console.log(err)
   });
   }
 });
@@ -178,7 +190,7 @@ var storage = multer.diskStorage({
     console.log(req.body)
     var courses = []
       con.query("SELECT * FROM coursedet ", function (err, result, fields) {
-    if (err) throw err;
+    if (err) console.log(err);
 
    courses = result
    console.log("courses")
@@ -258,7 +270,7 @@ var courseid = req.body.courseid
 console.log(courseid)
 var res1 = ""
   con.query("SELECT * FROM assignmentlist WHERE courseid ="+courseid, function (err, result, fields) {
-    if (err) throw err;
+    if (err) console.log(err);
 
    
     res.end(JSON.stringify(result))
@@ -269,7 +281,7 @@ var res1 = ""
 app.post('/createannounce',function(req,res){
   console.log(req.body)
   con.query("INSERT INTO announcements(courseid,anct_name,anct_details,anct_date) VALUES(?,?,?,?)",[req.body.courseid,req.body.anct_name,req.body.anct_details,req.body.anct_date], function (err, result, fields) {
-    if (err) throw err
+    if (err) console.log(err)
 });
 res.writeHead(200,{
   'Content-Type' : 'text/plain'
@@ -280,7 +292,7 @@ res.end();
 app.post('/createassignment',function(req,res){
   console.log(req.body)
   con.query("INSERT INTO  assignmentlist(name,due,marks,courseid) VALUES(?,?,?,?)",[req.body.asgmnt_name,req.body.asgmnt_due,req.body.asgmnt_marks,req.body.courseid], function (err, result, fields) {
-    if (err) throw err
+    if (err) console.log(err)
 });
 res.writeHead(200,{
   'Content-Type' : 'text/plain'
@@ -291,7 +303,7 @@ res.end();
 app.post('/getpeople',function(req,res){
 console.log(req.body)
     con.query("SELECT * FROM studentcourses WHERE courseid ="+req.body.courseid, function (err, result, fields) {
-      if (err) throw err;
+      if (err) console.log(err);
       console.log(result)
      
       res.end(JSON.stringify(result))
@@ -302,14 +314,14 @@ console.log(req.body)
     console.log("hi",req.body)
     if(req.body.stufac==="faculty"){
       con.query("UPDATE coursedet SET name = ?,email =?,phonenumber =?,about = ?,city =?,country =?,company = ?,school =?,hometown =?,languages =?,gender = ? WHERE studentid = ?",[req.body.name,req.body.email,req.body.phonenumber,req.body.about,req.body.city,req.body.country,req.body.company,req.body.school,req.body.hometown,req.body.languages,req.body.gender,req.body.loginid],function (err, result, fields) {
-        if (err) throw err;
+        if (err) console.log(err);
       
         res.end(JSON.stringify(result))
       })
     }
     else{
       con.query("UPDATE studentdet SET name = ?,email =?,phonenumber =?,about = ?,city =?,country =?,company = ?,school =?,hometown =?,languages =?,gender = ? WHERE studentid = ?",[req.body.name,req.body.email,req.body.phonenumber,req.body.about,req.body.city,req.body.country,req.body.company,req.body.school,req.body.hometown,req.body.languages,req.body.gender,req.body.loginid],function (err, result, fields) {
-        if (err) throw err;
+        if (err) console.log(err);
         res.end(JSON.stringify(result))
       })
     }
@@ -320,7 +332,7 @@ console.log(req.body)
         console.log(req.body)
         con.query("SELECT MAX(quizid) as mx from quiz",function (err, result, fields) {
           console.log(result)
-          if (err) throw err;
+          if (err) console.log(err);
       if(result[0].mx<1000){
         maxid = 1000
       }
@@ -330,13 +342,13 @@ console.log(req.body)
       }
       console.log(maxid)
         con.query("INSERT INTO quiz(quizid,courseid,name,due,marks,quiztaken) VALUES(?,?,?,?,?,?)",[maxid,req.body.courseid,req.body.quizname,req.body.quizdue,req.body.quizmarks,"no"], function (err, result, fields) {
-          if (err) throw err;
+          if (err) console.log(err);
       });
       
       console.log(req.body.quesdet)
     req.body.quesdet.filter(function(quizdet){
       con.query("INSERT INTO quizques(quizid,quizquesid,quizname,quizquestion,quizopt1,quizopt2,quizopt3,quizopt4,quizopted) VALUES(?,?,?,?,?,?,?,?,?)",[maxid,maxqueid,req.body.quizname,quizdet.question,quizdet.option1,quizdet.option2,quizdet.option3,quizdet.option4,quizdet.crctans], function (err, result, fields) {
-        if (err) throw err;
+        if (err) console.log(err);
     });
     });
   });
@@ -345,7 +357,7 @@ console.log(req.body)
         console.log("inside subquiz")
         var score = 0
         con.query("SELECT quizquesid,quizopted FROM quizques WHERE quizid = "+JSON.stringify(req.body.quizid), function (err, result, fields) {
-          if (err) throw err;
+          if (err) console.log(err);
            
           result.filter(function(quizques){
             console.log(quizques)
@@ -363,7 +375,7 @@ console.log(req.body)
             } 
         });
         con.query("UPDATE  quiz SET quiztaken ='yes' WHERE quizid = "+JSON.stringify(req.body.quizid)+" and courseid="+JSON.stringify(req.body.courseid), function (err, result, fields) {
-          if (err) throw err;
+          if (err) console.log(err);
           console.log(result.affectedRows + " record(s) updated");
       });
         })
@@ -381,7 +393,7 @@ console.log(req.body)
     }
     else{
       con.query("SELECT *  FROM studentdet WHERE studentid ="+JSON.stringify(req.body.loginid), function (err, result, fields) {
-        if (err) throw err;
+        if (err) console.log(err);
         res.end(JSON.stringify(result))
       })
     }
@@ -391,7 +403,7 @@ console.log(req.body)
   app.post('/addcourse',function(req,res){
     console.log(req.body)
     con.query("INSERT INTO `coursedet` (`facultyid`, `courseid`, `coursename`, `coursedept`, `coursedes`, `courseroom`, `coursecapacity`, `waitlistcapacity`, `courseterm`, `coursecol`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",[req.body.facultyid,req.body.courseid,req.body.coursename, req.body.coursedept, req.body.coursedes, req.body.courseroom,req.body.coursecap, req.body.coursewaitcap, req.body.courseterm, req.body.coursecol], function (err, result, fields) {
-      if (err) throw err
+      if (err) console.log(err)
   });
   res.writeHead(200,{
     'Content-Type' : 'text/plain'
@@ -406,7 +418,7 @@ app.post('/getquiz',function(req,res){
   console.log(courseid)
   var res1 = ""
     con.query("SELECT * FROM quiz WHERE courseid ="+courseid, function (err, result, fields) {
-      if (err) throw err;
+      if (err) console.log(err);
 
      
       res.end(JSON.stringify(result))
@@ -419,7 +431,7 @@ app.post('/getquiz',function(req,res){
     console.log( quizid)
     var res1 = ""
       con.query("SELECT * FROM quizques WHERE quizid ="+quizid, function (err, result, fields) {
-        if (err) throw err;
+        if (err) console.log(err);
 
       
         res.end(JSON.stringify(result))
@@ -434,7 +446,7 @@ app.post('/gradesearch',function(req,res){
   if(req.body.stufac=="student"){
  try {
     con.query("(SELECT G.studentid,cd.coursename,P.name,P.due,G.score,P.marks FROM grades as G INNER JOIN assignmentlist as P ON G.courseid=P.courseid and G.assignmentid = P.assignmentid INNER JOIN coursedet as cd ON G.courseid = cd.courseid WHERE G.courseid ="+courseid+" AND G.studentid = "+req.body.loginid+") UNION (SELECT H.studentid,dc.coursename,Q.name,Q.due,H.score,Q.marks FROM grades as H INNER JOIN quiz as Q ON H.courseid=Q.courseid and H.assignmentid = Q.quizid INNER JOIN coursedet as dc ON H.courseid = dc.courseid WHERE H.courseid ="+courseid+" AND H.studentid = "+req.body.loginid+")", function (err, result, fields) {
-      if (err) throw err;
+      if (err) console.log(err);
 
   console.log(result)
       res.end(JSON.stringify(result))
@@ -447,7 +459,7 @@ app.post('/gradesearch',function(req,res){
   }
   else{
     con.query("(SELECT G.studentid,cd.coursename,P.name,P.due,G.score,P.marks FROM grades as G INNER JOIN assignmentlist as P ON G.courseid=P.courseid and G.assignmentid = P.assignmentid INNER JOIN coursedet as cd ON G.courseid = cd.courseid WHERE G.courseid ="+req.body.id+" AND cd.facultyid ="+req.body.loginid+") UNION (SELECT H.studentid,dc.coursename,Q.name,Q.due,H.score,Q.marks FROM grades as H INNER JOIN quiz as Q ON H.courseid=Q.courseid and H.assignmentid = Q.quizid  INNER JOIN coursedet as dc ON H.courseid = dc.courseid WHERE H.courseid ="+req.body.id+" AND dc.facultyid ="+req.body.loginid+")", function (err, result, fields) {
-      if (err) throw err;
+      if (err) console.log(err);
 
   console.log(result)
       res.end(JSON.stringify(result))
@@ -550,14 +562,14 @@ app.post('/getannounce',function(req,res){
   console.log(courseid)
 
     con.query("SELECT * FROM announcements WHERE courseid ="+courseid, function (err, result, fields) {
-      if (err) throw err;
+      if (err) console.log(err);
       res.end(JSON.stringify(result))
   });
 })
 app.post('/requestpermission',function(req,res){
 console.log("hello",req.body)
   con.query("UPDATE  studentcourses SET coursestatus ='enrolled' WHERE studentid = "+JSON.stringify(req.body.loginid)+" and courseid="+JSON.stringify(req.body.courseid), function (err, result, fields) {
-    if (err) throw err;
+    if (err) console.log(err);
     console.log(result.affectedRows + " record(s) updated");
 });
 res.end();
@@ -569,7 +581,7 @@ app.post('/getannouncedet',function(req,res){
   
 
     con.query("SELECT * FROM announcements WHERE courseid ="+req.body.courseid+" AND anct_id="+req.body.anct_id, function (err, result, fields) {
-      if (err) throw err;
+      if (err) console.log(err);
       res.end(JSON.stringify(result))
   });
 })
@@ -578,7 +590,7 @@ app.post('/getassignmentdet',function(req,res){
   
 
   con.query("SELECT * FROM assignmentlist WHERE courseid ="+req.body.courseid+" AND assignmentid="+req.body.assignmentid, function (err, result, fields) {
-    if (err) throw err;
+    if (err) console.log(err);
     res.end(JSON.stringify(result))
 });
 })
@@ -598,13 +610,13 @@ app.post('/getcourselist',function(req,res){
   console.log(stuname)
 if(req.body.stufac==="faculty"){
   con.query("SELECT * FROM  coursedet JOIN facultydetails on coursedet.facultyid=facultydetails.facultyid WHERE facultydetails.username="+JSON.stringify(req.body.stuname), function (err, result, fields) {
-    if (err) throw err;
+    if (err) console.log(err);
     res.end(JSON.stringify(result))
 });
 }
 else{
   con.query("SELECT * FROM  studentcourses JOIN coursedet ON coursedet.courseid = studentcourses.courseid JOIN studentdet ON studentdet.username=studentcourses.username WHERE studentdet.username="+JSON.stringify(req.body.stuname), function (err, result, fields) {
-    if (err) throw err;
+    if (err) console.log(err);
     res.end(JSON.stringify(result))
 });
 }
@@ -618,23 +630,23 @@ else{
   if(req.body.enrollstatus=="Drop"){
     console.log("hello",req.body.stuname,req.body.courseid)
   con.query("SELECT * from studentcourses WHERE username="+JSON.stringify(req.body.stuname)+"AND courseid="+JSON.stringify(req.body.courseid), function (err, result, fields) {
-    if (err) throw err;
+    if (err) console.log(err);
 
   console.log(",,,,,,,",result)
     con.query("DELETE FROM studentcourses WHERE username="+JSON.stringify(req.body.stuname)+"AND courseid="+JSON.stringify(req.body.courseid), function (err, result, fields) {
-      if (err) throw err;
+      if (err) console.log(err);
 
   });
   
  if(result[0].coursestatus=="enrolled"){
   con.query("UPDATE  studentcourses SET coursestatus ='enrolled' WHERE coursestatus='waitlist' and courseid="+JSON.stringify(req.body.courseid)+" LIMIT 1"  , function (err, result, fields) {
-    if (err) throw err;
+    if (err) console.log(err);
     console.log(result.affectedRows + " record(s) updated");
 });
 con.query("SELECT * FROM coursedet WHERE courseid="+mysql.escape(req.body.courseid), function (err, result, fields) {
-  if (err) throw err;
+  if (err) console.log(err);
   con.query("UPDATE coursedet SET coursecapacity = ? WHERE courseid = ?",[result[0].coursecapacity+1,req.body.courseid], function (err, result, fields) {
-    if (err) throw err;
+    if (err) console.log(err);
 });
     
 });
@@ -644,26 +656,26 @@ con.query("SELECT * FROM coursedet WHERE courseid="+mysql.escape(req.body.course
   }
   else{
     con.query("SELECT * FROM coursedet WHERE courseid="+mysql.escape(req.body.courseid), function (err, result, fields) {
-      if (err) throw err;
+      if (err) console.log(err);
     console.log(result)
 console.log("hi",result[0].coursecapacity-1)
      if(result[0].coursecapacity>0){
        console.log("........................",result[0].coursecapacity-1,req.body.courseid,JSON.stringify(req.body.courseid))
       
     con.query("INSERT INTO studentcourses(studentid,username,courseid,coursestatus) VALUES(?,?,?,?)",['402',req.body.stuname,req.body.courseid,'enrolled'], function (err, result, fields) {
-      if (err) throw err
+      if (err) console.log(err)
   });
   con.query("UPDATE coursedet SET coursecapacity = ? WHERE courseid = ?",[result[0].coursecapacity-1,req.body.courseid], function (err, result, fields) {
-    if (err) throw err;
+    if (err) console.log(err);
 });
     
      }
      else if(result[0].waitlistcapacity>0){
       con.query("INSERT INTO studentcourses(studentid,username,courseid,coursestatus) VALUES(?,?,?,?)",['402',req.body.stuname,req.body.courseid,'waitlist'], function (err, result, fields) {
-        if (err)throw err
+        if (err)console.log(err)
     });
     con.query("UPDATE coursedet SET waitlistcapacity = ? WHERE courseid = ?",[result[0].waitlistcapacity-1,req.body.courseid], function (err, result, fields) {
-      if (err) throw err;
+      if (err) console.log(err);
   });
      }
      else{
