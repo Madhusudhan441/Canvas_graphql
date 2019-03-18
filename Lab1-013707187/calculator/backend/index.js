@@ -34,10 +34,10 @@ app.use(function(req, res, next) {
     
     
     try {
-      console.log("hi")
+      console.log("Input:",req.body.value)
       
-      console.log(req.statusCode)
-      console.log(eval(req.body.value))
+   
+      console.log("Result:",eval(req.body.value))
       
       res1 = 
       {

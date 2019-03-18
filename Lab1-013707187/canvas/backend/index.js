@@ -40,6 +40,8 @@ app.use(function(req, res, next) {
     next();
   });
 
+ 
+
   var mysql = require('mysql');
 
   var con = mysql.createConnection({
@@ -62,13 +64,13 @@ app.post('/login',function(req,res){
   // var password = req.body.password;
   console.log("Inside Login Post Request");
   //console.log("Req Body : ", username + "password : ",password);
-  console.log("Req Body : ",req.body);
+  // console.log("Req Body : ",req.body);
  if(req.body.stufac==="faculty"){
   con.query("SELECT *  FROM facultydetails WHERE facultyid = "+JSON.stringify(req.body.username), function (err, result, fields) {
     if (err){
       console.log(err)
     } 
-    console.log(result)
+    // console.log(result)
   
     result.filter(function(user){
       console.log(user.username,user.facultyid,req.body.username)
@@ -79,8 +81,8 @@ app.post('/login',function(req,res){
           res.writeHead(200,{
               'Content-Type' : 'text/plain'
           })
-          console.log(user.username)
-          res.send(user.username);
+          
+          res.end(user.username);
           console.log("login done ")
        
       }
@@ -92,9 +94,9 @@ app.post('/login',function(req,res){
   con.query("SELECT *  FROM studentdet WHERE studentid ="+JSON.stringify(req.body.username), function (err, result, fields) {
     if (err) {console.log(err)};
 
-    console.log(result)
+    // console.log(result)
     result.filter(function(user){
-      console.log(user.studentid,user.password)
+      // console.log(user.studentid,user.password)
       if(user.studentid === req.body.username && user.password === req.body.password){
           res.cookie('cookie',req.body.username,{maxAge: 900000, httpOnly: false, path : '/'});
           req.session.user = user;
@@ -102,8 +104,8 @@ app.post('/login',function(req,res){
           res.writeHead(200,{
               'Content-Type' : 'text/plain'
           })
-          console.log(user.username)
-          console.log("login done ")
+          // console.log(user.username)
+          console.log("login successfully done ")
           res.end(user.username);
          
       }
@@ -119,10 +121,16 @@ app.post('/login',function(req,res){
  }
 }); 
 app.post('/signup',function(req,res){
-  console.log(req.body)
+ 
   if(req.body.owner=="student"){
   con.query("INSERT INTO studentdet(studentid,username,password) VALUES(?,?,?)",[req.body.loginid,req.body.username,req.body.password], function (err, result, fields) {
-    if (err) {console.log(err)}
+    if (err) {
+      console.log("User Already Exists")
+      res.end("User Already Exists")
+      }
+      else{
+        res.end("Signup Successful")
+      }
 });
   }
   else{
@@ -383,6 +391,7 @@ console.log(req.body)
       });
       
   app.post('/getprofile',function(req,res){
+  
     if(req.body.stufac==="faculty"){
       con.query("SELECT *  FROM facultydetails WHERE facultyid = "+JSON.stringify(req.body.loginid), function (err, result, fields) {
         if (err) {
@@ -393,7 +402,7 @@ console.log(req.body)
     }
     else{
       con.query("SELECT *  FROM studentdet WHERE studentid ="+JSON.stringify(req.body.loginid), function (err, result, fields) {
-        if (err) console.log(err);
+        if (err){console.log(err)};
         res.end(JSON.stringify(result))
       })
     }
@@ -411,7 +420,7 @@ console.log(req.body)
   res.end();
   
   });
- 
+
 app.post('/getquiz',function(req,res){
 
   var courseid = req.body.courseid
@@ -696,3 +705,4 @@ console.log("hi",result[0].coursecapacity-1)
   courseresult=[]
 app.listen(3001);
 console.log("Server Listening on port 3001");
+module.exports = app;

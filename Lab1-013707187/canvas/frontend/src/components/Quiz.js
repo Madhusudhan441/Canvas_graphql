@@ -229,7 +229,7 @@ export default class Quiz extends Component {
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <h4 class="modal-title" id="upload-avatar-title">Upload new avatar</h4>
+          <h4 class="modal-title" id="upload-avatar-title">Add New Question</h4>
         </div>
         <div class="modal-body">
         <center>

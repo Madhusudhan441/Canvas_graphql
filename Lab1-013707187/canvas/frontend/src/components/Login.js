@@ -106,7 +106,7 @@ Login = (e) => {
             <form >
                 <h5 class="text-center" style={{color:"#5E5E5E",fontWeight:"bold"}}>Sign in</h5>       
                 <div class="form-group">
-                    <input type="text" onChange = {this.usernameChangeHandler} name="uname" class="form-control" placeholder="SJSU ID Number" required="required"></input>
+                    <input type="number" onChange = {this.usernameChangeHandler} name="uname" class="form-control" placeholder="SJSU ID Number" required="required"></input>
                 </div>
                 <div class="form-group">
                     <input type="password" onChange = {this.passwordChangeHandler}  name="pwd" class="form-control" placeholder="Password" required="required"></input>

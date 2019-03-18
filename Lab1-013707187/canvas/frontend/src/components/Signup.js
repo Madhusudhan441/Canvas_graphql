@@ -49,7 +49,7 @@ signup=(e)=>{
         axios.post('http://localhost:3001/signup',datasignup)
         .then((response) => {
           if(response.status === 200){
-                   
+                   alert(response.data)
             console.log("success")
             console.log(response.data)
          
@@ -80,10 +80,10 @@ signup=(e)=>{
             <form>
                 <h5 class="text-center" style={{color:"#5E5E5E",fontWeight:"bold"}}>Sign up</h5>       
                 <div class="form-group">
-                    <input type="number" onChange={this.signChangeHandler} name="id" class="form-control" placeholder="SJSU ID Number" required="required"></input>
+                    <input type="number"  onChange={this.signChangeHandler} name="id" class="form-control" placeholder="SJSU ID Number" required="required"></input>
                 </div>
                 <div class="form-group">
-                    <input type="text" onChange={this.signChangeHandler} name="username" class="form-control" placeholder="Name" required="required"></input>
+                    <input type="text" pattern="[a-zA-Z]*" oninput="setCustomValidity('')" oninvalid="setCustomValidity(' Name Should contain only aphabets')" onChange={this.signChangeHandler} name="username" class="form-control" placeholder="Name" required="required"></input>
                 </div>
                 <div class="form-group">
                     <input type="password" onChange={this.signChangeHandler} name="password" class="form-control" placeholder="Password" required="required"></input>

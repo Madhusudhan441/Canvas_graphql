@@ -130,8 +130,13 @@ export default class Navbar extends Component {
 
               <button data-effect="st-effect-1" onClick={this.addClass} class="appWh "><span class="fa fa-user fa-2x" ></span><span><br></br>Account</span></button></li>
 
+              <li class="colorTabs" style={{ width: "100%", height: "100%", color: "#FFFFFF" }}>
 
-            <li class="active colorTabs"><a href="http://localhost:3000/home"><div class="appAct"><i class="fal fa-tachometer fa-2x"></i><span><br></br>Dashboard</span></div></a></li>
+<button data-effect="st-effect-1"  class="appWh "><span class="fa fa-user fa-2x" ></span><span><br></br><a style={{color:"white"}} href="http://localhost:3000/home">Dashboard</a></span></button></li>
+
+
+
+            {/* <li class=" colorTabs"><a href="http://localhost:3000/home"><div class="appWh"><i class="fal fa-tachometer fa-2x"></i><span><br></br>Dashboard</span></div></a></li> */}
 
             <li class="colorTabs" style={{ width: "100%", height: "100%", color: "#FFFFFF" }}>
 
