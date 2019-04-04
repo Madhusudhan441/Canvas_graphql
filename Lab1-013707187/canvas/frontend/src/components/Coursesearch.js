@@ -45,7 +45,7 @@ export default class Coursesearch extends Component {
         this.setState({
             statusres:"updated"
         })
-      
+      alert("in callback")
         const searchlist = {
             cname : this.state.cname,
             cterm : this.state.cterm,
@@ -70,6 +70,7 @@ export default class Coursesearch extends Component {
             axios.defaults.withCredentials = true;
             //make a post request with the user data
             const data2 = {
+                id:localStorage.getItem('loginid'),
                 stuname:localStorage.getItem('stuname'),
                 stufac:localStorage.getItem('stufac')
             }
@@ -96,6 +97,7 @@ export default class Coursesearch extends Component {
         axios.defaults.withCredentials = true;
         //make a post request with the user data
         const data2 = {
+            id:localStorage.getItem('loginid'),
             stuname:localStorage.getItem('stuname'),
             stufac:localStorage.getItem('stufac')
         }

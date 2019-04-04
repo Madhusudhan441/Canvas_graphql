@@ -59,17 +59,22 @@ export default class Courseresults extends Component {
            const data1={
                enrollstatus:stat.enrollstatus,
                courseid:stat.courseid,
+               id:localStorage.getItem('loginid'),
+               coursename:stat.coursename,
                courseterm:stat.courseterm,
-               stuname:localStorage.getItem('stuname')
+               stuname:localStorage.getItem('stuname'),
+               
            }
         
         axios.defaults.withCredentials = true;
+        console.log("res",data1)
+        alert("in results")
         //make a post request with the user data
         axios.post('http://localhost:3001/regcourse',data1)
             .then(response => {
                 console.log("Status Code : ",response.status);
                 if(response.status === 200){
-                 
+                 alert("success")
                    console.log("success")
                    console.log(response.data)
                    
@@ -118,13 +123,13 @@ export default class Courseresults extends Component {
             this.state.coursestatus="Not Enrolled"
             this.state.regbtnflag = "Register"
             this.state.permission = "hidden"
+if(this.props.data.courseres  != null){
             this.props.data.courseres.map(course1 => {
                 console.log(course1.courseid,course.courseid)
                 if(course1.courseid==course.courseid){
                    this.state.regbtnflag="Drop",
                    this.state.coursestatus=course1.coursestatus
                    console.log("coursesta",this.state.coursestatus)
-    
                     }
                     if(this.state.coursestatus=="waitlist"){
                         this.state.permission = "visible"
@@ -133,6 +138,7 @@ export default class Courseresults extends Component {
               
                
         })
+    }
         console.log("coursestatus",this.state.coursestatus,course.courseid)
           
             return (

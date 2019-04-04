@@ -1,6 +1,9 @@
+import { connect } from 'react-redux';
+import {signup } from '../actions/LoginActions';
+import { Redirect } from 'react-router';
 import React, { Component } from 'react'
 import axios from 'axios';
-export default class Signup extends Component {
+class Signup extends Component {
   constructor() {
     super();
     this.state = {
@@ -35,33 +38,34 @@ signChangeHandler=(e)=>{
     })
   }
 }
-signup=(e)=>{
+
+ signup=async(e)=>{
   console.log("hi")
-      const datasignup={
-       loginid:this.state.id,
-       username:this.state.username,
-       password:this.state.password,
-       owner:this.state.owner
-      }
-      console.log(datasignup)
-      axios.defaults.withCredentials = true;
-     
-        axios.post('http://localhost:3001/signup',datasignup)
-        .then((response) => {
-          if(response.status === 200){
-                   alert(response.data)
-            console.log("success")
-            console.log(response.data)
-         
-      
-      }
-    });
+  let {id,username,password,owner} = this.state
+await this.props.signup(id,username,password,owner)
+await alert("signup"+this.props.output)
+setTimeout(async () => {
+if (this.props.output == 200) {
   
+  await alert("sign up successful")
+ 
 }
+
+}, 0);
+ }
   render() {
-  
+  //   let redirectVar = null
+  // alert("helo")
+    console.log("in",this.props.output)
+  //   if (this.props.output==200) {
+  //     alert("mem"+this.props.output)
+  //     redirectVar = <Redirect to="/login" />
+  // }
+
+ 
     return (
       <div>
+        {/* {redirectVar} */}
         <center>
     <div class = "lessspace"> </div>
 <h3 style={{color:"#777777"}}>
@@ -83,10 +87,10 @@ signup=(e)=>{
                     <input type="number"  onChange={this.signChangeHandler} name="id" class="form-control" placeholder="SJSU ID Number" required="required"></input>
                 </div>
                 <div class="form-group">
-                    <input type="text" pattern="[a-zA-Z]*" oninput="setCustomValidity('')" oninvalid="setCustomValidity(' Name Should contain only aphabets')" onChange={this.signChangeHandler} name="username" class="form-control" placeholder="Name" required="required"></input>
+                    <input type="text"  onChange={this.signChangeHandler} name="username" class="form-control" placeholder="Name" required="required"></input>
                 </div>
                 <div class="form-group">
-                    <input type="password" onChange={this.signChangeHandler} name="password" class="form-control" placeholder="Password" required="required"></input>
+                    <input type="password" onChange={this.signChangeHandler}  name="password" class="form-control"  placeholder="Password" required="required"></input>
                 </div>
                 
                 <div class="form-group">
@@ -114,3 +118,9 @@ signup=(e)=>{
     )
   }
 }
+const mapStateToProps = (state) => ({
+  // variables below are subscribed to changes in loginState variables (redirectVar,Response) and can be used with props.
+  output: state.signupState.output
+})
+
+export default connect(mapStateToProps, { signup })(Signup);

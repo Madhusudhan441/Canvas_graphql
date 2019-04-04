@@ -18,6 +18,7 @@ export default class Home extends Component {
     componentDidMount(){
     
       const dataq={
+        id:localStorage.getItem('loginid'),
         stuname:localStorage.getItem('stuname'),
         stufac:localStorage.getItem('stufac')
       }
@@ -26,14 +27,13 @@ export default class Home extends Component {
         axios.post('http://localhost:3001/getcourselist',dataq)
         .then((response) => {
           if(response.status === 200){
-                   
-            console.log("success")
+            console.log("success dashboard")
             console.log(response.data)
         //update the state with the response data
         this.setState({
             courses:response.data
         });
-        console.log(this.state.announcelist)
+        console.log("coursresults",this.state.courses)
       }
     });
   
@@ -41,21 +41,22 @@ export default class Home extends Component {
     }
     
   render() {
-    let redirectVar = null;
-        if(cookie.load('cookie')){
-            redirectVar = <Redirect to= "/home"/>
-        }
-        if(!(cookie.load('cookie'))){
+    // let redirectVar = null;
+    //     if(localStorage.getItem('logsuccess')){
+    //         redirectVar = <Redirect to= "/home"/>
+    //     }
+    //     else{
          
-            redirectVar = <Redirect to= "/login"/>
-        }
+    //         redirectVar = <Redirect to= "/login"/>
+    //     }
    
+ 
     let coursedet = this.state.courses.map(course => {
       
         return(
            
             <div class = "col-12 col-sm-4 ">
-            {redirectVar}
+          
            <div class="shadow">
             <div class = " tileborder" style={{marginTop:"6%",boxShadow: "0px 0px 1px 0px grey",borderTopLeftRadius:"6px",borderTopRightRadius:"6px", backgroundColor:course.coursecol}} >
             
@@ -76,9 +77,10 @@ export default class Home extends Component {
             </div>
         )
     })
+  
     return (
       <div>
-{redirectVar}
+ {/* {redirectVar} */}
         <div className='container' style={{marginLeft:"-15px",float:"left",padding:"0px"}}>
         <div class="row rowC"></div>
         <div class='col col-sm-2'>

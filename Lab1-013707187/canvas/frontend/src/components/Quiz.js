@@ -65,12 +65,14 @@ export default class Quiz extends Component {
 
   addque=(e)=>{
     const var5 = {
-      "question":this.state.question,
-      "option1":this.state.option1,
-      "option2":this.state.option2,
-      "option3":this.state.option3,
-      "option4":this.state.option4,
-      "crctans":this.state.crctans
+      "quizname":this.state.quizname,
+      "quizquestion":this.state.question,
+      "quizopt1":this.state.option1,
+      "quizopt2":this.state.option2,
+      "quizopt3":this.state.option3,
+      "quizopt4":this.state.option4,
+      "quizans":"",
+      "quizopted":this.state.crctans
     }
     console.log(var5)
    this.state.quesdet.push(var5)

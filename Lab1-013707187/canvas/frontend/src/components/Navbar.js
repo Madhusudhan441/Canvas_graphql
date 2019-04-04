@@ -4,17 +4,21 @@ import { Link } from 'react-router-dom';
 import '.././App.css';
 import axios from 'axios';
 import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { signout } from '../actions/LoginActions';
 import cookie from 'react-cookies';
 import {Redirect} from 'react-router';
-export default class Navbar extends Component {
+class Navbar extends Component {
   constructor() {
     super();
 
     this.state = {
       courses: [],
       visible: "hidden",
+      visible2: "hidden",
       regbtn:"",
-      addbtn:""
+      addbtn:"",
+      stat:""
     }
     if(localStorage.getItem('stufac')=="faculty"){
       this.state.regbtn="hidden"
@@ -29,6 +33,7 @@ export default class Navbar extends Component {
   componentDidMount(){
     
     const dataq={
+      id:localStorage.getItem('loginid'),
       stuname:localStorage.getItem('stuname'),
       stufac:localStorage.getItem('stufac')
     }
@@ -45,22 +50,24 @@ export default class Navbar extends Component {
           courses:response.data
       });
       console.log(this.state.courses)
+     
     }
   });
  
   }
   addClass2 = (e) => {
-    if (this.state.visible === "hidden") {
-
+    if (this.state.visible2 === "hidden") {
 
       this.setState({
-        visible: "visible"
+        visible2: "visible",
+        visible:"hidden"
       })
     }
     else {
 
       this.setState({
-        visible: "hidden"
+        visible2: "hidden",
+        visible:"hidden"
       })
     }
     var menu = document.querySelector('#st-container1');
@@ -70,11 +77,15 @@ export default class Navbar extends Component {
     menu.classList.toggle('st-menu2-open');
   }
   Logout=(e)=>{
- 
-    
-    cookie.remove('cookie', { path: '/' })
-   
-    
+    e.preventDefault();
+
+//  alert("in logout")
+      this.props.signout();
+    // cookie.remove('cookie', { path: '/' })
+    // alert(this.props.logsuccess)
+    this.setState({
+      stat:"updated"
+    })
   }
   
   addClass = (e) => {
@@ -82,13 +93,15 @@ export default class Navbar extends Component {
 
 
       this.setState({
-        visible: "visible"
+        visible: "visible",
+        visible2: "hidden"
       })
     }
     else {
 
       this.setState({
-        visible: "hidden"
+        visible: "hidden",
+        visible2: "hidden"
       })
     }
     var menu = document.querySelector('#st-container');
@@ -101,14 +114,31 @@ export default class Navbar extends Component {
   render() {
     
     let navLogin = null;
-    if(cookie.load('cookie')){
-        console.log("Able to read cookie");
-        navLogin = (
+    let redirectVar = null;
+
+
+   
+    // alert(this.state.stat)
+    // alert("hellohey"+localStorage.getItem('logsuccess'))
+    // alert("in navbar")
+    if(localStorage.getItem('logsuccess')=="false"){
+      // localStorage.setItem('logsuccess',false)
+      // alert("in navbar")
+      // alert("hellohey"+localStorage.getItem('logsuccess'))
+      redirectVar = <Redirect to= "/login"/>
+  }
+
+
+    if(localStorage.getItem('logsuccess')=="true"){  
+      // alert("hel"+localStorage.getItem('logsuccess'))
+        navLogin =  (
             <ul class="nav navbar-nav navbar-right">
                     <li ><Link  to="/" onClick = {this.Logout}><span class="btn btn-primary">Logout</span></Link></li>
             </ul>
         );
+        
     }
+ 
     let coursedet = this.state.courses.map(course => {
    
       return (
@@ -119,20 +149,20 @@ export default class Navbar extends Component {
     });
     return (
       <div>
-       
+       {redirectVar}
         <div class="container cont1" style={{ width: "50%", float: "left", padding: "0px" }}>
           <div style={{ position: "absolute", marginTop: "0px" }}><img src={require("./sjsu_1.JPG")} style={{ height: "80px", width: "80px" }} alt="SJSU LOGO"></img></div>
           <div class="space"></div>
 
           <ul class="nav nav-tabs tabs-left  " style={{ width: "100%", position: "relative" }}>
 
-            <li class="colorTabs" style={{ width: "100%", height: "100%", color: "#FFFFFF" }}>
+          <li  class="colorTabs" style={{ width: "100%", height: "100%", color: "#FFFFFF" }}>
 
-              <button data-effect="st-effect-1" onClick={this.addClass} class="appWh "><span class="fa fa-user fa-2x" ></span><span><br></br>Account</span></button></li>
+              <button  onClick={this.addClass} data-effect="st-effect-1"  class="appWh "><span style={{pointerEvents: "none"}} class="fa fa-user fa-2x" ></span><span style={{pointerEvents: "none"}}><br></br>Account</span></button></li>
 
-              <li class="colorTabs" style={{ width: "100%", height: "100%", color: "#FFFFFF" }}>
+              <a href="http://localhost:3000/home"><li class="colorTabs" style={{ width: "100%", height: "100%", color: "#FFFFFF" }}>
 
-<button data-effect="st-effect-1"  class="appWh "><span class="fa fa-user fa-2x" ></span><span><br></br><a style={{color:"white"}} href="http://localhost:3000/home">Dashboard</a></span></button></li>
+<button  data-effect="st-effect-1"  class="appWh "><span style={{pointerEvents: "none"}} class="fal fa-tachometer fa-2x" ></span><span style={{pointerEvents: "none"}}><br></br><a style={{color:"white"}} >Dashboard</a></span></button></li></a>
 
 
 
@@ -140,10 +170,10 @@ export default class Navbar extends Component {
 
             <li class="colorTabs" style={{ width: "100%", height: "100%", color: "#FFFFFF" }}>
 
-              <button data-effect="st-effect-2" onClick={this.addClass2} class="appWh "><span class="fa fa-user fa-2x" ></span><span><br></br>Courses</span></button></li>
+              <button data-effect="st-effect-2" onClick={this.addClass2} class="appWh "><span style={{pointerEvents: "none"}} class="fa fa-book fa-2x" ></span><span style={{pointerEvents: "none"}}><br></br>Courses</span></button></li>
             <li class="colorTabs" style={{ width: "100%", height: "100%", color: "#FFFFFF" }}>
 
-              <button data-effect="st-effect-1" onClick={this.addClass} class="appWh "><i class="fa fa-user fa-2x"></i><span><br></br>Groups</span></button></li>
+              <button data-effect="st-effect-1" onClick={this.addClass} class="appWh "><i class="fa fa-users fa-2x"></i><span><br></br>Groups</span></button></li>
 
             <li class="colorTabs"><button class="appWh"><i class="fa fa-calendar-alt fa-2x"></i><span><br></br> Calendar </span></button></li>
             <li class="colorTabs"><button class="appWh"><i class="fal fa-envelope fa-2x"></i><span><br></br> Inbox   </span></button></li>
@@ -178,7 +208,7 @@ export default class Navbar extends Component {
           </div>
           <div id="st-container1" class="st-container1 cont2" >
 
-            <div class="st-menu2 st-effect-2" id="menu-1" style={{ marginLeft: "90px", visibility: this.state.visible }}>
+            <div class="st-menu2 st-effect-2" id="menu-1" style={{ marginLeft: "90px", visibility: this.state.visible2 }}>
 
               <h2 style={{ color: "black" }}>Courses</h2>
               <hr></hr>
@@ -205,3 +235,10 @@ export default class Navbar extends Component {
     )
   }
 }
+const mapStateToProps = (state) => ({
+  // variables below are subscribed to changes in loginState variables (redirectVar,Response) and can be used with props.
+  logsuccess: state.loginState.logsuccess,
+  response: state.loginState.response
+})
+
+export default connect(mapStateToProps, { signout })(Navbar);

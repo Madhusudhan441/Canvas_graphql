@@ -61,6 +61,7 @@ export default class Quiz_ques extends Component {
     componentDidMount(){
         console.log("hi")
       const dataq={
+        courseid:localStorage.getItem('courseid'),
         quizid:localStorage.getItem('Quizid')
       }
       axios.defaults.withCredentials = true;
