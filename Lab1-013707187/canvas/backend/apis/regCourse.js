@@ -11,6 +11,18 @@ var mysql = require('mysql');
     
     console.log("hello",req.body.stuname,req.body.courseid)
     let x = req.body.id
+    
+
+
+
+
+
+
+
+
+
+
+
     StudentLogin.findOneAndUpdate({
       studentid: x
     }, {
@@ -78,7 +90,32 @@ console.log("course dropped")
   res.end()
   }
   else{
+    
+    Courselist.findOneAndUpdate({
+      courseid: req.body.courseid
+    }, {
+      $push: {
+        studentsregistered: {
+                     
+          studentid: req.body.id,
+          studentname: req.body.stuname,
+                     
+          }
+      }
+    }, {
+      upsert: true
+    }, function (err, result) {
+      if (err)
+          return res.send(500, {
+              error: err
+          });
+      else{
+        console.log("studnets updated")
+      }
+    })
+
    console.log(req.body.coursecol)
+   
     Courselist.findOne({
       courseid: req.body.courseid
   }, function (err, course) {

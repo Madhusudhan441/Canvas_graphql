@@ -16,7 +16,7 @@ export default class Graderesults extends Component {
             return (
                 <tr>
                 <td >{grade.studentid}</td>
-                <td >{grade.coursename}</td>
+                <td >{grade.courseid}</td>
                 <td>{grade.name}</td>
                 <td>{grade.due.substring(0,10)}</td>
                 <td> </td>

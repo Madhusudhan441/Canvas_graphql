@@ -16,7 +16,7 @@ router.post('/getquiz',function(req,res){
         res.end("Error finding mongo results for quiz");
     }
      else {
-       
+       console.log("res",results)
        arr = results[0].quiz
        console.log("inarray",arr)
        res.end(JSON.stringify(arr))
@@ -36,7 +36,7 @@ router.post('/getquiz',function(req,res){
       const Courselist  = require('../models/Courses');
       console.log("quizid",req.body.quizid,req.body.courseid)
         var res1 = ""
-        Courselist.find({courseid:"258","quiz.quizid":"1"}, {_id:0, "quiz.quizques": 1}, (err, results) => {
+        Courselist.find({courseid:req.body.courseid,"quiz.quizid":req.body.quizid}, {_id:0, "quiz.quizques": 1}, (err, results) => {
           if(err){
             console.log("Error finding mongo results for quiz");
             res.writeHead(400, {

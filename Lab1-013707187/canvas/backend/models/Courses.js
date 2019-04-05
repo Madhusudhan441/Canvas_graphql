@@ -63,6 +63,15 @@ const coursedetails = new mongoose.Schema({
           // required: [true, 'password is required,']
         }
       }],
+      studentsregistered:[{
+        studentid:{
+          type:String
+        },
+        studentname:{
+          type:String
+        }
+      }
+      ],
       
       assignments:[{
         assignmentid: {
@@ -107,7 +116,7 @@ const coursedetails = new mongoose.Schema({
         quizques:
            [ {
           
-               quizid:{
+            quizquesid:{
                  type:String
                },
                   quizname: {

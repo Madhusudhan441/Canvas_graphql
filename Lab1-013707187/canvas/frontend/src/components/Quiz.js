@@ -7,6 +7,7 @@ import { timingSafeEqual } from 'crypto';
 export default class Quiz extends Component {
     constructor(props) {
         super(props);
+    
         console.log(props);
         this.state={
             quiz:"",

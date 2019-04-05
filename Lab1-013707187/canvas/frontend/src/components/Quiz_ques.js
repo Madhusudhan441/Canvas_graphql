@@ -36,6 +36,7 @@ export default class Quiz_ques extends Component {
           status:"updated"
         });
         alert("Responses Recorded")
+        
         this.props.callbackFromParent();
       }
     });
@@ -83,7 +84,12 @@ export default class Quiz_ques extends Component {
   
       }
   render() {
-   
+  //   var coursered = null
+  //  if(this.state.status==="updated"){
+  //    alert("redirect")
+  //   coursered = <Redirect to= "/coursehome"/>
+  //   alert(coursered)
+  //  }
     if(this.state.quiz){
       
         var quizqueslist = this.state.quiz.map((quiz,idx)=>{
@@ -120,7 +126,7 @@ export default class Quiz_ques extends Component {
           }
     return (
       <div>
-       
+   
 
         <div class="container border maindiv">
             <ul style={{marginLeft:"-2%"}} >

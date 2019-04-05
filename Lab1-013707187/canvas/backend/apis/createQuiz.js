@@ -25,10 +25,11 @@ var con = require('../db/sql')
          }
     var quesarr = req.body.quesdet
     var arr1 = []
-    quesarr.forEach(quiz => {
+    
+    quesarr.forEach((quiz,i) => {
       arr1.push(
         {
-                      "quizquesid":"1",
+                      "quizquesid":i+1,
                       "quizname":quiz.quizname,
                       "quizquestion":quiz.quizquestion,
                       "quizopt1":quiz.quizopt1,

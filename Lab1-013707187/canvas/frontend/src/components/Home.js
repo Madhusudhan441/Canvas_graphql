@@ -65,7 +65,7 @@ export default class Home extends Component {
             <div class = "lessspace"></div>
             </div>
             <div class = "tileborder" style={{borderBottomLeftRadius:"6px",boxShadow: "0px 1px 1px 0px grey",borderBottomRightRadius:"6px"}}>
-            <a href="/coursehome"><span style={{fontWeight:"bold",color:course.coursecol}}>{course.coursename}</span></a>
+            <a onClick={sto=>{localStorage.setItem("courseid",course.courseid)}} href="/coursehome"><span style={{fontWeight:"bold",color:course.coursecol}}>{course.coursename}</span></a>
             <a href="#"><p style={{color:"#6C757C"}}>{course.coursename}</p></a>
             
             <button type="button" class="btn btn-link fal fa-bullhorn  designcol"></button>

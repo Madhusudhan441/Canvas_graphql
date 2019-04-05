@@ -69,7 +69,7 @@ export default class People extends Component {
 
           return(
         <tr>
-        <td>{person.username}</td>
+        <td>{person.studentname}</td>
         <td>{person.studentid}</ td>
         <td><button class="btn btn-primary" onClick={this.dropstud(person.username)} style={{visibility:this.state.btnvis}}>Drop Student</button></td>
     </tr>

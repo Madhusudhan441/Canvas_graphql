@@ -31,6 +31,7 @@ export default class Grades extends Component {
         axios.defaults.withCredentials = true;
         //make a post request with the user data
         const data2 = {
+            id:localStorage.getItem('loginid'),
             stuname:localStorage.getItem('stuname'),
             stufac:localStorage.getItem('stufac')
         }

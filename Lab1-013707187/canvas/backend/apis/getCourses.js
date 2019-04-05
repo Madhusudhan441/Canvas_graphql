@@ -62,12 +62,13 @@ router.post('/getcourselist',function(req,res){
                 console.log("courseid error")
             }
             else{
-                
+                if(results!=null){
                 console.log("courseresult",results)
                  courseresult.push({"courseid":course.courseid,"coursestatus":course.coursestatus,"coursename":results.coursename,"coursecol":results.coursecol})
                 console.log("incourse",courseresult)
             
             }
+        }
             if(counter == arr.length - 1) {
                 res.end(JSON.stringify(courseresult));
             }
