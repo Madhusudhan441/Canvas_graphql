@@ -14,6 +14,7 @@ export default class Coursesearch extends Component {
             cid:"",
             cterm:"fall",
             statusres:"init",
+            status1:"",
             coursres:[],
             Courses:[]
         }
@@ -40,12 +41,38 @@ export default class Coursesearch extends Component {
             cid : e.target.value
         })
     }
-    myCallback = () =>{
+    componentDidUpdate(){
+        const data2 = {
+            id:localStorage.getItem('loginid'),
+            stuname:localStorage.getItem('stuname'),
+            stufac:localStorage.getItem('stufac')
+        }
+       
+          axios.post('http://localhost:3001/getcourselist',data2)
+                .then(response => {
+                    console.log("Status Code child: ",response.status);
+                    // alert("upd")
+                    if(response.status === 200){
+                     
+                       console.log("success child")
+                    //    alert("updated")
+                       console.log(response.data)
+                       if(this.state.status1!="updated")
+                        this.setState({ 
+                            courseres:response.data,
+                            status1:"updated"
+                        })
+                        
+    
+                    }
+                });
+    }
+    myCallback = async() =>{
       
         this.setState({
             statusres:"updated"
         })
-      alert("in callback")
+    //   alert("in callback")
         const searchlist = {
             cname : this.state.cname,
             cterm : this.state.cterm,
@@ -61,6 +88,7 @@ export default class Coursesearch extends Component {
                 if(response.status === 200){
                     
                    console.log("success parent")
+                   
                    console.log(response.data)
                     this.setState({
                         Courses: response.data
@@ -75,13 +103,15 @@ export default class Coursesearch extends Component {
                 stufac:localStorage.getItem('stufac')
             }
            
-        
-            axios.post('http://localhost:3001/getcourselist',data2)
+            // alert("upda")
+           await  axios.post('http://localhost:3001/getcourselist',data2)
                 .then(response => {
                     console.log("Status Code child: ",response.status);
+                    // alert("upd")
                     if(response.status === 200){
                      
                        console.log("success child")
+                    //    alert("updated")
                        console.log(response.data)
                         this.setState({ 
                             courseres:response.data
@@ -92,7 +122,7 @@ export default class Coursesearch extends Component {
                
     }
       
-    componentDidMount(){
+    async componentDidMount(){
        
         axios.defaults.withCredentials = true;
         //make a post request with the user data
@@ -102,16 +132,17 @@ export default class Coursesearch extends Component {
             stufac:localStorage.getItem('stufac')
         }
        
-        
+        // alert("hind")
       
-        axios.post('http://localhost:3001/getcourselist',data2)
+        await axios.post('http://localhost:3001/getcourselist',data2)
             .then(response => {
                 console.log("Status Code child: ",response.status);
                 if(response.status === 200){
                  
                    console.log("success child")
                    console.log(response.data)
-                    this.setState({ 
+                //    alert("updated")
+                     this.setState({ 
                         courseres:response.data
                     })
 
@@ -148,9 +179,9 @@ export default class Coursesearch extends Component {
             });
     }
   render() {
-  
+    // alert("hello")
     return (
-        
+    
       <div>
          
           <div className='container' style={{marginLeft:"-15px",float:"left",padding:"0px"}}>

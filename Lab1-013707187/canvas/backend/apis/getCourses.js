@@ -51,6 +51,7 @@ router.post('/getcourselist',function(req,res){
     res.writeHead(200, {
         'Content-type' : 'application/json',
     })
+    if(results.length>0){
     console.log("results",results[0].studentcourses)
     var counter = 0
     arr = results[0].studentcourses
@@ -77,6 +78,7 @@ router.post('/getcourselist',function(req,res){
 
 
     })
+}
  
 }
 })

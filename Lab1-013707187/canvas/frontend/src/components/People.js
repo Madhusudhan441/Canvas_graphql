@@ -6,7 +6,8 @@ export default class People extends Component {
         this.state={
             people:[],
             btnvis:"hidden",
-            status:""
+            status:"",
+            status1:""
         }
         if(localStorage.getItem('stufac')=="faculty"){
           this.state.btnvis="visible"
@@ -19,8 +20,11 @@ export default class People extends Component {
       const data1={
         enrollstatus:"Drop",
         courseid:localStorage.getItem('courseid'),
+        coursename:"",
+        id:val.studentid,
         courseterm:"",
-        stuname:val
+        stuname:val.username
+        
     }
  alert("hi")
  axios.defaults.withCredentials = true;
@@ -32,18 +36,19 @@ export default class People extends Component {
           
             console.log("success")
             console.log(response.data)
-            
-         this.setState({
-             status:"updated"
-         })
-         
-    this.props.callbackFromParent();
+      
+            this.setState({
+              people:response.data,
+              status:"updated"
+          });
+          
+    // this.props.callbackFromParent();
 
          }
      });
     }
-    componentDidMount(){
-        alert("hello")
+    componentDidUpdate(){
+      
       const dataq={
         courseid:localStorage.getItem('courseid')
       }
@@ -53,7 +58,33 @@ export default class People extends Component {
         .then((response) => {
           if(response.status === 200){
             
-            console.log(response.data)
+            console.log("response",response.data)
+         
+        //update the state with the response data
+     
+     if(this.state.status1!="updated"){
+      this.setState({
+        people:response.data,
+        status1:"updated"
+    });
+    
+     }
+      
+      }
+    });
+    }
+  componentDidMount(){
+        
+      const dataq={
+        courseid:localStorage.getItem('courseid')
+      }
+      axios.defaults.withCredentials = true;
+     
+        axios.post('http://localhost:3001/getpeople',dataq)
+        .then((response) => {
+          if(response.status === 200){
+            
+            console.log("response",response.data)
          
         //update the state with the response data
         this.setState({
@@ -62,19 +93,27 @@ export default class People extends Component {
       
       }
     });
+    // var a = 1
+    // while(a<4){
+    //   a = a+1
+    //   alert("hi")
+    // }
   
       }
   render() {
+    console.log(this.state.status)
+    if(this.state.people.length>0){
       var getpeople=this.state.people.map(person=>{
 
           return(
         <tr>
         <td>{person.studentname}</td>
         <td>{person.studentid}</ td>
-        <td><button class="btn btn-primary" onClick={this.dropstud(person.username)} style={{visibility:this.state.btnvis}}>Drop Student</button></td>
+        <td><button class="btn btn-primary" onClick={this.dropstud(person)} style={{visibility:this.state.btnvis}}>Drop Student</button></td>
     </tr>
           )
       })
+    }
     return (
       <div>
           

@@ -11,18 +11,6 @@ var mysql = require('mysql');
     
     console.log("hello",req.body.stuname,req.body.courseid)
     let x = req.body.id
-    
-
-
-
-
-
-
-
-
-
-
-
     StudentLogin.findOneAndUpdate({
       studentid: x
     }, {
@@ -40,7 +28,7 @@ var mysql = require('mysql');
       if (err){
         
         res.status(500).end();
-        throw(err)
+      console.log(err)
       }
           
       else{
@@ -51,16 +39,39 @@ var mysql = require('mysql');
             },{
               $inc: { coursecapacity: + 1}
               // "coursecapacity":course.coursecapacity+1
-            },function(err,res){
-              if(res){
+            },function(err,result){
+              if(result){
                 console.log("course capacity updated")
+          res.status(200).end();
               }
               else{
                 console.log("could not update course capacity")
               }
             });
-          
+    Courselist.findOneAndUpdate({
+              courseid: req.body.courseid
+            }, {
+              $pull: {
+                studentsregistered: {
+                             
+                  studentid: req.body.id,
+                             
+                  }
+              }
+            }, {
+              upsert: true
+            }, function (err, result) {
+              if (err)
+                  return res.send(500, {
+                      error: err
+                  });
+              else{
+                console.log("students updated",req.body.id)
+                
+              }
+            })
 console.log("course dropped")
+res.status(200).end();
       }
     });
 //   con.query("SELECT * from studentcourses WHERE username="+JSON.stringify(req.body.stuname)+"AND courseid="+JSON.stringify(req.body.courseid), function (err, result, fields) {
@@ -87,7 +98,7 @@ console.log("course dropped")
 // });
 //  }
 // });
-  res.end()
+  
   }
   else{
     
@@ -99,6 +110,7 @@ console.log("course dropped")
                      
           studentid: req.body.id,
           studentname: req.body.stuname,
+          
                      
           }
       }
@@ -122,7 +134,7 @@ console.log("course dropped")
        if (course) {
          if(course.coursecapacity>0){
    console.log("courseregistering")
-    StudentLogin.findOneAndUpdate({
+    StudentLogin.updateOne({
       studentid: req.body.id
     }, {
       $push: {
@@ -148,12 +160,15 @@ console.log("course dropped")
           courseid:req.body.courseid
         },{
           "coursecapacity":course.coursecapacity-1
-        },function(err,res){
-          if(res){
+        },function(err,result){
+          if(result){
             console.log("course capacity updated")
+            res.status(200).end();
+            
           }
           else{
             console.log("could not update course capacity")
+            res.end("course capacity could not update")
           }
         });
 
@@ -192,12 +207,13 @@ console.log("course dropped")
         },function(err,res){
           if(res){
             console.log("course waitlistcapacity updated")
+            res.status(200).end();
           }
           else{
             console.log("could not update waitlist capacity")
           }
         });
-          res.status(200).end();
+          
       }
     
     });
@@ -241,6 +257,6 @@ console.log("course dropped")
 //   });
     
   }
-  res.end()
+
   });
   module.exports=router

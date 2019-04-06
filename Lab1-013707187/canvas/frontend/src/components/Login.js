@@ -49,14 +49,15 @@ class Login extends Component {
         e.preventDefault();
         let { username, password, stufac } = this.state;
         this.props.submitLogin(this.state.username, this.state.password, this.state.stufac)
+        localStorage.setItem("loginid", username)
+        localStorage.setItem("stuname", password)
+        localStorage.setItem('stufac', stufac)
         setTimeout(() => {
             console.log("hello", this.props.response, this.props.logsuccess)
             // alert(this.props.logsuccess)
             if (this.props.logsuccess === true) {
                 // alert("logged")
-                localStorage.setItem("loginid", username)
-                localStorage.setItem("stuname", password)
-                localStorage.setItem('stufac', stufac)
+           console.log("logged")
             }
         
             

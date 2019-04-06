@@ -57,6 +57,20 @@ const user = new mongoose.Schema({
     type:String
     // required: [true, 'password is required,']
   },
+  messages:[{
+studentid:{
+  type:String
+},
+messagecontent:[{
+  studentname:{
+    type:String
+  },
+  message:{
+    type:String
+  }
+}]
+}
+  ],
   studentcourses:[
     {
      
@@ -91,7 +105,7 @@ const user = new mongoose.Schema({
     }
   ]
 
-})
+},{strict:"false"})
 var Studentdet = mongoose.model('studentdets',user);
 module.exports = Studentdet;
 

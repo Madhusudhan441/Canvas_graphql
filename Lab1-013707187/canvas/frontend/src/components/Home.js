@@ -11,12 +11,56 @@ export default class Home extends Component {
     constructor(){
         super();
         this.state = {  
-            courses:[]
+            courses:[],
+            temp : 0
+
           }
         
     }  
-    componentDidMount(){
+    dragstart=(e)=>{
+      // alert("drag start")
+      // e.preventDefault();
+
+      e.dataTransfer.setData("txt1", e.target.id);
+      this.setState({
+        temp:1
+      })
+      // var idx1 = e.target.id
+      // var idx2 = this.state.courses.length -1;
+      // console.log(idx1,idx2)
+      // var b = this.state.courses[idx1];
+      // this.state.courses[idx1] = this.state.courses[idx2];
+      // this.state.courses[idx2] = b;
+      // this.setState({
+      //   temp:1
+      // })
+      console.log("courseres",this.state.courses)
+    }
+    dragend=(e)=>{
     
+   
+      e.preventDefault();
+      // alert("hi")
+     
+    }
+    drop=(val,e)=>{
+      // alert("hi")
+      e.preventDefault();
+      var idx1 = e.dataTransfer.getData("txt1");
+      var idx2 = val;
+      console.log("id",val)
+      console.log("hi",idx1)
+      var b = this.state.courses[idx1];
+      this.state.courses[idx1] = this.state.courses[idx2];
+      this.state.courses[idx2] = b;
+
+      console.log("courseres",this.state.courses)
+    }
+    componentDidUpdate(){
+
+    }
+    componentDidMount(){
+ 
       const dataq={
         id:localStorage.getItem('loginid'),
         stuname:localStorage.getItem('stuname'),
@@ -30,9 +74,13 @@ export default class Home extends Component {
             console.log("success dashboard")
             console.log(response.data)
         //update the state with the response data
+        
+          console.log(this.state.temp)
         this.setState({
             courses:response.data
         });
+      
+     
         console.log("coursresults",this.state.courses)
       }
     });
@@ -51,11 +99,11 @@ export default class Home extends Component {
     //     }
    
  
-    let coursedet = this.state.courses.map(course => {
+    let coursedet = this.state.courses.map((course,idx) => {
       
         return(
            
-            <div class = "col-12 col-sm-4 ">
+            <div  class = "col-12 col-sm-4 " id = {idx} draggable = "true" onDragOver={this.dragend} onDrop={this.drop.bind(this,idx)} onDragStart={this.dragstart}>
           
            <div class="shadow">
             <div class = " tileborder" style={{marginTop:"6%",boxShadow: "0px 0px 1px 0px grey",borderTopLeftRadius:"6px",borderTopRightRadius:"6px", backgroundColor:course.coursecol}} >

@@ -9,6 +9,7 @@ import addcourse from './components/addcourse'
 import Signup from './components/Signup'
 import './App.css';
 import {Redirect} from 'react-router';
+import Inbox from './components/Inbox'
 import Coursesearch from './components/Coursesearch'
 import Coursehome from './components/Coursehome'
 export default class Main extends Component {
@@ -24,6 +25,8 @@ export default class Main extends Component {
         <Route path="/coursesearch" component={Coursesearch}/>
         <Route path="/addcourse" component={addcourse}/>
         <Route path="/coursehome" component={Coursehome}/>
+        <Route path="/inbox" component={Inbox}/>
+
 
       </div>
     )
