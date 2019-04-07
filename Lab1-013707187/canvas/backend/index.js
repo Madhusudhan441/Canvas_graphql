@@ -75,8 +75,9 @@ var getAnnounce = require('./apis/getAnnounce');
 var requestPermission = require('./apis/requestPermission');
 var getCourses = require('./apis/getCourses');
 var regCourse = require('./apis/regCourse');
-
-
+var getStudents = require('./apis/getStudents')
+var getMessages = require('./apis/getMessages')
+var sendmessage = require('./apis/sendmessage')
 
 app.use('/', login)
 app.use('/', Signup)
@@ -99,6 +100,9 @@ app.use('/', getAnnounce)
 app.use('/', requestPermission)
 app.use('/', getCourses)
 app.use('/', regCourse)
+app.use('/',getStudents)
+app.use('/',getMessages)
+app.use('/',sendmessage)
 
 // courseresult=[]
 app.listen(3001);

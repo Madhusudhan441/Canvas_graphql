@@ -14,7 +14,7 @@ var con = require('../db/sql')
             })
             res.end("Error finding mongo results for quiz");
         }
-         else {
+         else{
            console.log("results",results)
            
            arr = results[0].quiz
