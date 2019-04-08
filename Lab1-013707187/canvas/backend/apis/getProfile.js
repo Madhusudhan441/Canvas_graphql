@@ -1,7 +1,12 @@
 
 var router = require('express').Router();
 var con = require('../db/sql')
-router.post('/getprofile',function(req,res){
+var passport = require('passport');
+
+var requireAuth = passport.authenticate('jwt', {session: false});
+
+router.post('/getprofile',requireAuth,function(req,res){
+  console.log("header",req.header)
   const Facultydetails  = require('../models/Facultydetails');
   
     if(req.body.stufac==="faculty"){

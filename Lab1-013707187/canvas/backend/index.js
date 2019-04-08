@@ -10,13 +10,39 @@ var fs = require('fs');
 const path = require('path');
 var con = require('./db/sql')
 var bcrypt = require('bcrypt');
+var config = require('./config/settings');
+var jwt = require('jsonwebtoken');
+var passport = require('passport');
+
+// var crypt = require('./app/crypt');
+// var db = require('./app/db');
+var requireAuth = passport.authenticate('jwt', {session: false});
+
+
+// // Use body-parser to get POST requests for API use
+app.use(bodyParser.urlencoded({extended: true}));
+// app.use(bodyParser.json());
+// app.use(cors());
+
+// Log requests to console
+// app.use(morgan('dev'));
+require('./config/passport')(passport);
+
+console.log("here");
+//require('./app/routes')(app);
+app.use(passport.initialize());
+app.use(passport.session());
+// Bring in defined Passport Strategy
+
+
+
 
 //use cors to allow cross origin resource sharing
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(cors({ origin: 'http://localhost:3001', credentials: true }));
 app.use(cors({ origin: 'D:/273/273_labs/canvas/frontend/src/components/submission/', credentials: true }));
 app.use(session({//use express session to maintain session data
-  secret: 'cmpe273_canvas',
+  secret: 'secret',
   resave: false, // Forces the session to be saved back to the session store, even if the session was never modified during the request
   saveUninitialized: false, // Force to save uninitialized session to db. A session is uninitialized when it is new but not modified.
   duration: 60 * 60 * 1000,    // Overall duration of Session : 30 minutes : 1800 seconds

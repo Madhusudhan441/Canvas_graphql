@@ -56,13 +56,11 @@ export default class Home extends Component {
 
       console.log("courseres",this.state.courses)
     }
-    componentDidUpdate(){
-
-    }
+    
     componentDidMount(){
  
       const dataq={
-        id:localStorage.getItem('loginid'),
+        id:localStorage.getItem('loginid'), 
         stuname:localStorage.getItem('stuname'),
         stufac:localStorage.getItem('stufac')
       }

@@ -152,16 +152,22 @@
   // });
   }
     componentDidMount(){
+      var token = localStorage.getItem('token')
   
       const dataq={
+       
         loginid:localStorage.getItem('loginid'),
         stufac:localStorage.getItem('stufac')
       }
   
       axios.defaults.withCredentials = true;
     
-        axios.post('http://localhost:3001/getprofile',dataq)
+        axios.post('http://localhost:3001/getprofile',dataq,
+        {
+          headers: {"Authorization" : `Bearer ${token}`}
+      })
         .then((response) => {
+      
           if(response.status === 200){
             
             console.log("hello",response.data)  
