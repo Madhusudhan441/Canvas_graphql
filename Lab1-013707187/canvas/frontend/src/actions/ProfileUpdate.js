@@ -17,8 +17,11 @@ export const profileUpdate = (stufac, loginid, name, email, phonenumber, about, 
             school: school,
             gender: gender
         }
+        const token = localStorage.getItem('token')
         axios.defaults.withCredentials = true;
-        await axios.post('http://localhost:3001/updateprofile', data1)
+        await axios.post('http://localhost:3001/updateprofile', data1, {
+            headers: {"Authorization" : `Bearer ${token}`}
+        })
             .then((response) => {
                 alert("response")
                 alert(response.status)

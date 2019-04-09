@@ -14,16 +14,20 @@ router.post('/createannounce',function(req,res){
   }
    else {
      console.log(results)
+  var max_id = 0
+
+     if(results.length>0){
      arr = results[0].announcements
      console.log("array",arr)
-
+if(arr.length>0){
      var max_id = arr[arr.length-1].anct_id
      console.log("max_id",parseInt(max_id)+1)
      console.log(results[0].announcements)
+}
     //  res.end(JSON.stringify(results[0].announcements))
-  
+     }
     Courselist.findOneAndUpdate({
-      courseid: req.body.courseid
+      courseid: req.body.courseid,
     }, {
       $push: {
           announcements: {

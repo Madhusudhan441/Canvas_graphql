@@ -18,6 +18,7 @@ const initialState = {
               }
         }
         else{
+          console.log("this",action.payload)
         if (action.payload === 406) {
          
           localStorage.setItem('logsuccess',false)

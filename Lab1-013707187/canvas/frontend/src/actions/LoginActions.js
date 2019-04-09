@@ -12,6 +12,8 @@ export const submitLogin = (username, password, stufac) => dispatch => {
     axios.post('http://localhost:3001/login', data)
         .then(response => {
             console.log("token",response)
+            // alert("done")
+
             localStorage.setItem('token',response.data.token)
             dispatch({
                 type: LOGIN_CHECK,
@@ -22,12 +24,13 @@ export const submitLogin = (username, password, stufac) => dispatch => {
 
         })
         .catch((error) => {
-            console.log("in error",error)
+            // alert(error.response)
+            console.log("in error",error.response)
             dispatch({
                 
                 //ERROR 400 status
                 type: LOGIN_CHECK,
-                payload: "400",
+                payload: error.response.status,
                 stuname: ""
             })
         })          
@@ -53,10 +56,10 @@ export const signup = (id, username, password, owner) => async (dispatch) => {
             })
         })
         .catch((error) => {
-            alert("error")
+            // alert("error")
             console.log("in error")
             dispatch({
-                //ERROR 400 status
+                //ERROR 400 status      
                 type: SIGNUP_CHECK,
                 payload: error.response.status
             })

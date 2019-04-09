@@ -1,6 +1,10 @@
 var router = require('express').Router();
 var con = require('../db/sql')
-router.post('/getannounce',function(req,res){
+var passport = require('passport');
+
+var requireAuth = passport.authenticate('jwt', {session: false});
+
+router.post('/getannounce',requireAuth,function(req,res){
   const Courselist  = require('../models/Courses');
 
     var courseid = req.body.courseid
@@ -24,7 +28,7 @@ router.post('/getannounce',function(req,res){
   //       res.end(JSON.stringify(result))
   //   });
   // })
-  router.post('/getannouncedet',function(req,res){
+  router.post('/getannouncedet',requireAuth,function(req,res){
   const Courselist  = require('../models/Courses');
   
     Courselist.find({courseid:req.body.courseid,"announcements.anct_id":req.body.anct_id}, {_id:0, announcements: 1}, (err, results) => {

@@ -17,20 +17,28 @@ router.post('/login',function(req,res){
     FacultyLogin.findOne({
         facultyid: req.body.username
     }, function (err, user) {
+    
          if (user) {
+             console.log("user",user)
             if (bcrypt.compareSync(req.body.password, user.password)) {
                 res.code = "200";
                 res.value = user;
                 console.log(res.value);
                 // Create token if the password matched and no error was thrown
-                var token = jwt.sign({user}, secret, {
-                    expiresIn: 10080 // in seconds
-                });
-                console.log(token + "Inside token")
-                res.cookie('ccookie', "user", { maxAge: 900000, httpOnly: false, path: '/' });
+                // var token = jwt.sign({user}, secret, {
+                //     expiresIn: 10080 // in seconds
+                // });
+                 // Create token if the password matched and no error was thrown
+                 var token = jwt.sign(req.body,secret,{
+                    expiresIn : 10080
+                })
+    
+        
+        console.log(token + "Inside token")
+        res.cookie('ccookie', "user", { maxAge: 900000, httpOnly: false, path: '/' });
 
-                res.status(200).json({ success: true,token:token,email : req.body.username, cookie:"user"});
-            }
+        res.status(200).json({ success: true, token:token, email : req.body.username, cookie:"user"});
+    }
             else {
                 res.code = "406";
                 res.value = "Invalid password";
@@ -39,7 +47,7 @@ router.post('/login',function(req,res){
             }
         }
         else{
-            
+            console.log("err",err)
                 res.code = "400";
                 res.value = "The Student id entered is invalid. Please try again.";
                 console.log(res.value);
@@ -56,68 +64,77 @@ router.post('/login',function(req,res){
 
        
 
-        console.log("In results login")
-        if(req.body)
-        {
-            req.session.user=req.body
-            console.log("Sesssion Details"+req.session.user)
-            var token = jwt.sign(req.body,secret,{
-                expiresIn : 10080
-            })
-            // res.writeHead(200,{
-            //     'Content-Type' : 'text/plain'
-            // })
-        res.status(200).json({ success: true, token:token, email : req.body.username, cookie:"user"});
+        // console.log("In results login")
+        // if(req.body)
+        // {
+        //     req.session.user=req.body
+        //     console.log("Sesssion Details"+req.session.user)
+        //     var token = jwt.sign(req.body,secret,{
+        //         expiresIn : 10080
+        //     })
 
+        //         res.status(200).json({ success: true, token:token, email : req.body.username, cookie:"user"});
+
+        //     // res.writeHead(200,{
+        //     //     'Content-Type' : 'text/plain'
+        //     // })
+        //     // var jsonResult = {
+        //     //     name : result.name,
+        //     //     type : result.type,
+        //     //     Token : token
+
+        //     // }
+        //     // res.end(JSON.stringify(jsonResult))
             
-        }
-        else{
-            res.writeHead(401,
-                {
-                    'Content-type' : 'text/plain'
-                })
-                console.log('Invalid Credentials')
-                res.end('Invalid Credentials')
-        }
+        // }
+        // else{
+        //     res.writeHead(401,
+        //         {
+        //             'Content-type' : 'text/plain'
+        //         })
+        //         console.log('Invalid Credentials')
+        //         res.end('Invalid Credentials')
+        // }
     
 
 
 
-    // StudentLogin.findOne({
-    //     studentid: req.body.username
-    // }, function (err, user) {
-    //      if (user) {
-    //         if (bcrypt.compareSync(req.body.password, user.password)) {
-    //             res.code = "200";
-    //             res.value = user;
-    //             console.log(res.value);
-    //             req.session.user = user;
-    //             // Create token if the password matched and no error was thrown
-    //             var token = jwt.sign({user}, secret, {
-    //                 expiresIn: "5m" // in seconds
-    //             });
-                
-    //             console.log(token + "Inside token")
-    //             res.cookie('ccookie', "user", { maxAge: 900000, httpOnly: false, path: '/' });
-
-    //             res.status(200).json({ success: true, token:token, email : req.body.username, cookie:"user"});
-    //         }
-    //         else {
-    //             res.code = "406";
-    //             res.value = "Invalid password";
-    //             console.log(res.value);
-    //             res.sendStatus(406).end();
-    //         }
-    //     }
-    //     else{
+    StudentLogin.findOne({
+        studentid: req.body.username
+    }, function (err, user) {
+         if (user) {
+            if (bcrypt.compareSync(req.body.password, user.password)) {
+                res.code = "200";
+                res.value = user;
+                console.log(res.value);
+                req.session.user = user;
+                // Create token if the password matched and no error was thrown
+                var token = jwt.sign(req.body,secret,{
+                            expiresIn : 10080
+                        })
             
-    //             res.code = "400";
-    //             res.value = "The email id entered is invalid. Please try again.";
-    //             console.log(res.value);
-    //             res.sendStatus(400).end();
+                
+                console.log(token + "Inside token")
+                res.cookie('ccookie', "user", { maxAge: 900000, httpOnly: false, path: '/' });
+
+                res.status(200).json({ success: true, token:token, email : req.body.username, cookie:"user"});
+            }
+            else {
+                res.code = "406";
+                res.value = "Invalid password";
+                console.log(res.value);
+                res.sendStatus(406).end();
+            }
+        }
+        else{
+            
+                res.code = "400";
+                res.value = "The email id entered is invalid. Please try again.";
+                console.log(res.value);
+                res.sendStatus(400).end();
            
-    //     }
-    // })
+        }
+    })
 
    }
   }); 

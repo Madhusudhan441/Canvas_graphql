@@ -29,10 +29,14 @@ export default class Announcements extends Component {
       //   courseid:localStorage.getItem('courseid')
       // }
       axios.defaults.withCredentials = true;
+      const token = localStorage.getItem('token')
      const params={
       courseid:localStorage.getItem('courseid')
     }
-        axios.post('http://localhost:3001/getannounce',params)
+        axios.post('http://localhost:3001/getannounce',params,
+        {
+          headers: {"Authorization" : `Bearer ${token}`}
+      })
         .then((response) => {
           if(response.status === 200){
                    
@@ -44,7 +48,11 @@ export default class Announcements extends Component {
         });
         console.log(this.state.announcelist)
       }
-    });
+    })
+    .catch((err)=>{
+      alert("unauthorized route")
+    })
+    
   
       }
       anctnameChangeHandler = (e) => {

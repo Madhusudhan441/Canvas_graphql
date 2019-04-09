@@ -15,9 +15,12 @@ export default class Announcements_det extends Component {
         anct_id:localStorage.getItem('anct_id'),
         courseid:localStorage.getItem('courseid')
       }
+      const token = localStorage.getItem('token')
       axios.defaults.withCredentials = true;
      
-        axios.post('http://localhost:3001/getannouncedet',dataq)
+        axios.post('http://localhost:3001/getannouncedet',dataq ,{
+          headers: {"Authorization" : `Bearer ${token}`}
+      })
         .then((response) => {
           if(response.status === 200){
                 

@@ -1,7 +1,10 @@
 
 var router = require('express').Router();
 var con = require('../db/sql')
-router.post('/updateprofile',function(req,res){
+var passport = require('passport');
+
+var requireAuth = passport.authenticate('jwt', {session: false});
+router.post('/updateprofile',requireAuth,function(req,res){
     console.log("hi",req.body)
     if(req.body.stufac==="faculty"){
  const Facultydetails  = require('../models/Facultydetails');
@@ -25,12 +28,18 @@ router.post('/updateprofile',function(req,res){
         }, {
       upsert: true
     }, function (err, result) {
-      if (err)
+      if (err){
+console.log(err)
           return res.send(500, {
               error: err
           });
+        }
       else{
  console.log("profile updated")
+ res.writeHead(200,{
+  'Content-Type' : 'text/plain'
+})
+res.end();
       }
     }
  )
