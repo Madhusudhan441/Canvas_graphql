@@ -1,9 +1,19 @@
 var mongoose = require('mongoose')
+var mongoose = require('mongoose');
+//var configLink=require('./../config');
+mongoose.Promise = global.Promise;
 
-const faculty = new mongoose.Schema({
-  _id: {type: String},
+mongoose.connect("mongodb://admin:admin@cluster0-shard-00-00-9vb82.mongodb.net:27017,cluster0-shard-00-01-9vb82.mongodb.net:27017,cluster0-shard-00-02-9vb82.mongodb.net:27017/canvas?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin",{useMongoClient: true});
+var mdb=mongoose.connection;
 
-  facultyid: {
+mdb.on('error',console.error.bind(console,'Connection error'))
+mdb.on('open',()=>{
+    
+    console.log('MongoDB connected!')
+})
+
+const user = new mongoose.Schema({
+  studentid: {
     type: String,
     required: [true, 'Studentid is required']
   },
@@ -58,10 +68,58 @@ const faculty = new mongoose.Schema({
   gender: {
     type:String
     // required: [true, 'password is required,']
+  },
+  messages:[{
+studentid:{
+  type:String
+},
+messagecontent:[{
+  studentname:{
+    type:String
+  },
+  message:{
+    type:String
   }
-})
-var Facultydet = mongoose.model('facultydetails',faculty);
-module.exports = Facultydet;
+}]
+}
+  ],
+  studentcourses:[
+    {
+     
+      courseid:{
+        type:String
+      },
+      coursename:{
+        type:String
+      },
+      coursecol:{
+        type:String
+      },
+      coursestatus:{
+        type:String
+        
+      }
+    }
+  ],
+  grades:[
+    {
+     
+      courseid:{
+        type:String        
+      },
+      assignmentid:{
+        type:String   
+      },
+      score:{
+        type:Number   
+      }
+
+    }
+  ]
+
+},{strict:"false"})
+var Studentdet = mongoose.model('studentdets',user);
+module.exports = Studentdet;
 
  // name:""
     // email:"",
