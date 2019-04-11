@@ -104,6 +104,8 @@ var regCourse = require('./apis/regCourse');
 var getStudents = require('./apis/getStudents')
 var getMessages = require('./apis/getMessages')
 var sendmessage = require('./apis/sendmessage')
+var getprofessors = require('./apis/getprofessors')
+
 
 app.use('/', login)
 app.use('/', Signup)
@@ -129,6 +131,8 @@ app.use('/', regCourse)
 app.use('/',getStudents)
 app.use('/',getMessages)
 app.use('/',sendmessage)
+app.use('/',getprofessors)
+
 
 // courseresult=[]
 app.listen(3001);

@@ -8,6 +8,7 @@ export default class Inbox extends Component {
         console.log(props); 
         this.state={
            students:[],
+           professors:[],
            id:""
         };
         
@@ -37,10 +38,27 @@ this.setState({
            console.log(this.state.students)
          }
        });
+       axios.post('http://localhost:3001/getprofessors')
+       .then((response) => {
+         if(response.status === 200){
+                  
+           console.log("retrieved professors")
+           console.log(response.data)
+       //update the state with the response data
+       this.setState({
+        professors:response.data
+       });
+       console.log("professors",this.state.professors)
+     }
+     else{
+       console.log("in else")
+     }
+   });
     }
  
   render() {
       var studentlist = null
+      var professorlist = null
       if(this.state.students.length>0){
         studentlist = this.state.students.map(student => {
             if(student.studentid!=localStorage.getItem('loginid')){
@@ -48,6 +66,21 @@ this.setState({
                 <div>
 <li style={{padding:"3px"}}>
     <div><a  onClick={this.sendid.bind(this,student)}>{student.name}</a></div>
+</li>
+<hr></hr>
+</div>
+            )
+            }
+        })
+        
+      }
+      if(this.state.professors.length>0){
+        professorlist = this.state.professors.map(professor => {
+            if(professor.facultyid!=localStorage.getItem('loginid')){
+            return(
+                <div>
+<li style={{padding:"3px"}}>
+    <div><a  onClick={this.sendid.bind(this,professor)}>{student.name}</a></div>
 </li>
 <hr></hr>
 </div>
@@ -65,8 +98,13 @@ this.setState({
                         <Navbar />
                     </div>
                 <div class = "col col-sm-3">
+                <label>Students</label>
                 <ul style={{padding:"6px"}}>
                    {studentlist}
+                   </ul>
+                  <label>Professors</label>
+                  <ul style={{padding:"6px"}}>
+                   {professorlist}
                    </ul>
                     </div>
                     

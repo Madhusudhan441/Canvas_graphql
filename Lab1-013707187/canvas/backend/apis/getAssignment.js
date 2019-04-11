@@ -1,49 +1,89 @@
 var router = require('express').Router();
 var con = require('../db/sql')
-router.post('/getassignment',function(req,res){
-  const Courselist  = require('../models/Courses');
+var kafka = require('../kafka/client');
 
-    var courseid = req.body.courseid
-    console.log(courseid)
-   
-    Courselist.find({courseid:req.body.courseid}, {_id:0, assignments: 1}, (err, results) => {
-      if(err){
-        console.log("Error finding mongo results for assignments");
-        res.writeHead(400, {
-            'Content-Type': 'text/plain'
-        })
-        res.end("Error finding mongo results for assignments");
+router.post('/getassignment',function(req,res){
+  kafka.make_request('getassignment', req.body, function(err, result){
+
+    if(result){
+      if(result.length>0){
+       console.log("announcement results",result[0].assignments)
+       res.end(JSON.stringify(result[0].assignments))
+      }
+      else{
+       res.writeHead(400, {
+         'Content-Type': 'text/plain'
+     })
+     res.end("Error finding mongo results for announcements");
+      }
     }
-     else {
-       console.log("assignment results",results[0].assignments)
-       res.end(JSON.stringify(results[0].assignments))
-     }
-    })
+    else{
+     res.writeHead(400, {
+       'Content-Type': 'text/plain'
+   })
+   res.end("Error finding mongo results for announcements");
+    }
+   
+     
+   })
+  
 
     })
     router.post('/getassignmentdet',function(req,res){
-      const Courselist  = require('../models/Courses');
-  
-      Courselist.find({courseid:req.body.courseid,"assignments.assignmentid":req.body.assignmentid}, {_id:0, assignments: 1}, (err, results) => {
-        if(err){
-          console.log("Error finding mongo results for announcements");
-          res.writeHead(400, {
-              'Content-Type': 'text/plain'
-          })
-          res.end("Error finding mongo results for announcements");
-      }
-       else {
-         
-         arr = results[0].assignments
-         console.log("inarray",arr)
-         arr.forEach(function(assignment){
-          console.log(assignment)
-          if(assignment.assignmentid==req.body.assignmentid){
-            res.end(JSON.stringify([assignment]))
-          }
+
+      kafka.make_request('getassignmentdet', req.body, function(err, results){
+
+        if(results){
+          if(results.length>0){
+            arr = results[0].assignments
+            console.log("inarray",arr)
+            arr.forEach(function(assignment){
+             console.log(assignment)
+             if(assignment.assignmentid==req.body.assignmentid){
+               res.end(JSON.stringify([assignment]))
+             }
+            })
+            
+          
+        }
+          else{
+           res.writeHead(400, {
+             'Content-Type': 'text/plain'
          })
+         res.end("Error finding mongo results for assignments");
+          }
+        }
+        else{
+         res.writeHead(400, {
+           'Content-Type': 'text/plain'
+       })
+       res.end("Error finding mongo results for assignments");
+        }
+       })
+
+
+      // const Courselist  = require('../models/Courses');
+  
+      // Courselist.find({courseid:req.body.courseid,"assignments.assignmentid":req.body.assignmentid}, {_id:0, assignments: 1}, (err, results) => {
+      //   if(err){
+      //     console.log("Error finding mongo results for announcements");
+      //     res.writeHead(400, {
+      //         'Content-Type': 'text/plain'
+      //     })
+      //     res.end("Error finding mongo results for announcements");
+      // }
+      //  else {
+         
+      //    arr = results[0].assignments
+      //    console.log("inarray",arr)
+      //    arr.forEach(function(assignment){
+      //     console.log(assignment)
+      //     if(assignment.assignmentid==req.body.assignmentid){
+      //       res.end(JSON.stringify([assignment]))
+      //     }
+      //    })
         
-       }
-      })
+      //  }
+      // })
     })
     module.exports=router
