@@ -42,7 +42,7 @@ var mysql = require('mysql');
             },function(err,result){
               if(result){
                 console.log("course capacity updated")
-          res.status(200).end();
+          // res.status(200).end();
               }
               else{
                 console.log("could not update course capacity")
@@ -204,8 +204,8 @@ res.status(200).end();
           courseid:req.body.courseid
         },{
           "waitlistcapacity":course.waitlistcapacity-1
-        },function(err,res){
-          if(res){
+        },function(err,result){
+          if(result){
             console.log("course waitlistcapacity updated")
             res.status(200).end();
           }

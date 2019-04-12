@@ -13,10 +13,14 @@ export default class Inbox extends Component {
         };
         
     }
-    sendid(val){
+    sendid(val,tostufac){
         console.log("value",val)
+        const data={
+          val:val,
+          tostufac: tostufac
+        }
 this.setState({
-    id:val
+    id:data
 })
 
     }
@@ -65,7 +69,7 @@ this.setState({
             return(
                 <div>
 <li style={{padding:"3px"}}>
-    <div><a  onClick={this.sendid.bind(this,student)}>{student.name}</a></div>
+    <div><a  onClick={this.sendid.bind(this,student,"student")}>{student.name}</a></div>
 </li>
 <hr></hr>
 </div>
@@ -75,12 +79,12 @@ this.setState({
         
       }
       if(this.state.professors.length>0){
-        professorlist = this.state.professors.map(professor => {
-            if(professor.facultyid!=localStorage.getItem('loginid')){
+        professorlist = this.state.professors.map(student => {
+            if(student.facultyid!=localStorage.getItem('loginid')){
             return(
                 <div>
 <li style={{padding:"3px"}}>
-    <div><a  onClick={this.sendid.bind(this,professor)}>{student.name}</a></div>
+    <div><a  onClick={this.sendid.bind(this,student,"faculty")}>{student.name}</a></div>
 </li>
 <hr></hr>
 </div>

@@ -54,6 +54,12 @@ router.post('/getcourselist',function(req,res){
               res.end("Error finding mongo results for course Details");
             }
           }
+          else if(results==[]){
+            res.writeHead(200, {
+                'Content-type' : 'application/json',
+            })
+            console.log(results)
+          }
           else{
            res.writeHead(400, {
              'Content-Type': 'text/plain'

@@ -60,6 +60,7 @@ if(results.length>0){
     var messageresult = []
     console.log("messages",results[0].messages)
     var counter = 0
+    if(results[0].messages){
     results[0].messages.forEach(messageres => {
       
         if(messageres.studentid==req.body.toId){
@@ -73,6 +74,7 @@ if(counter==results[0].messages.length-1){
 
 counter++;
     });
+}
 }
         }
     })

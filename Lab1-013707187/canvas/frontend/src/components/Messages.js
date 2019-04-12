@@ -27,14 +27,39 @@ onChangeHandler=(e)=>{
             alert("please enter message")
         }
         else{
+          var data = null;
         axios.defaults.withCredentials = true;
-        const data={
+        if(this.props.student.tostufac=="student"){
+          var data={
+            tostufac:this.props.student.tostufac,
+                stufac:localStorage.getItem('stufac'),
+               fromId:localStorage.getItem('loginid'),
+              toId:this.props.student.val.studentid,
+              fromName:localStorage.getItem('stuname'),
+              message:this.state.message,
+              studentname:this.props.student.val.name
+         }
+        }
+        else{
+          var data={
+            tostufac:this.props.student.tostufac,
+          stufac:localStorage.getItem('stufac'),
          fromId:localStorage.getItem('loginid'),
-        toId:this.props.student.studentid,
+        toId:this.props.student.val.facultyid,
         fromName:localStorage.getItem('stuname'),
         message:this.state.message,
-        studentname:this.props.student.name,
-       }
+        studentname:this.props.student.val.name
+         }
+        }
+      //   const data={
+      //     tostufac:this.props.student.tostufac,
+      //     stufac:localStorage.getItem('stufac'),
+      //    fromId:localStorage.getItem('loginid'),
+      //   toId:this.props.student.studentid,
+      //   fromName:localStorage.getItem('stuname'),
+      //   message:this.state.message,
+      //   studentname:this.props.student.name,
+      //  }
            axios.post('http://localhost:3001/sendmessage',data)
            .then((response) => {
              if(response.status === 200){
@@ -54,13 +79,30 @@ onChangeHandler=(e)=>{
    
     componentDidUpdate(){
         // alert("hi")
+        console.log("details",this.props.student)
+        if(this.props.student){
         axios.defaults.withCredentials = true;
-        const data={
+        var data = null;
+        console.log("students details",this.props.student.val.studentid)
+        if(this.props.student.tostufac=="student"){
+        var data={
+          tostufac:this.props.student.tostufac,
           stufac:localStorage.getItem('stufac'),
          fromId:localStorage.getItem('loginid'),
          fromName:localStorage.getItem('stuname'),
-        toId:this.props.student.studentid
+        toId:this.props.student.val.studentid
        }
+      }
+      else{
+        var data={
+          tostufac:this.props.student.tostufac,
+          stufac:localStorage.getItem('stufac'),
+         fromId:localStorage.getItem('loginid'),
+         fromName:localStorage.getItem('stuname'),
+        toId:this.props.student.val.facultyid
+       }
+      }
+        console.log("data",data)
            axios.post('http://localhost:3001/getmessages',data)
            .then((response) => {
              if(response.status === 200){
@@ -91,7 +133,7 @@ onChangeHandler=(e)=>{
          }  
        });
     }
-
+  }
   render() {
     //   alert("hihi")
       console.log("props",this.props.student)

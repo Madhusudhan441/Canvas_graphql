@@ -104,6 +104,7 @@ export default class Coursesearch extends Component {
             }
            
             // alert("upda")
+            alert("inside callback")
            await  axios.post('http://localhost:3001/getcourselist',data2)
                 .then(response => {
                     console.log("Status Code child: ",response.status);
@@ -111,6 +112,7 @@ export default class Coursesearch extends Component {
                     if(response.status === 200){
                      
                        console.log("success child")
+                       alert("inside callback success")
                     //    alert("updated")
                        console.log(response.data)
                         this.setState({ 
