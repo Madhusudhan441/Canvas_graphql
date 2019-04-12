@@ -8,9 +8,10 @@ var router = require('express').Router();
 var con = require('../db/sql')
 router.get('/seeFolders',function(req,res){
     const Filehound = require('filehound');
+    console.log("body",req.query)
 
     Filehound.create()
-      .path("./files/")
+      .path("./files/"+req.query.courseid+'/')
       .directory()
       .find((err, subdirectories) => {
         if (err) return console.error(err);
@@ -47,12 +48,28 @@ router.get('/seeFoldFiles',function(req,res){
        
       // var path = process.argv[2];
        console.log("inside see files")
-      fs.readdir( "./submissions/assignments/", function(err, items) {
+console.log(req.query)
+if(req.query.stufac=="student"){
+      fs.readdir( "./submissions/"+req.query.courseid+'/'+req.query.studentid+'/'+req.query.assignmentid+'/', function(err, items) {
           //console.log(items);
-       
+       console.log(items)
           res.end(JSON.stringify(items));
       });
+    }
+    else{
+      const Filehound = require('filehound');
+      console.log("body",req.query)
+  
+      Filehound.create()
+        .path("./submissions/"+req.query.courseid+'/')
+        .directory()
+        .find((err, subdirectories) => {
+          if (err) return console.error(err);
       
+          console.log(subdirectories);
+          res.send(subdirectories)
+        });
+    }
       
   
                
@@ -72,8 +89,9 @@ router.get('/seeFoldFiles',function(req,res){
   });
   router.post('/download-file/:file(*)', function(req, res){
       console.log('Inside DOwnload File');
+      console.log(req.body)
       var file = req.params.file;
-      var filelocation = path.join(__dirname,'..' + '/submissions/assignments/', file);
+      var filelocation = path.join(__dirname,'..' + '/submissions/'+req.body.data.courseid+'/'+req.body.data.studentid+'/'+req.body.data.assignmentid+'/', file);
       var img = fs.readFileSync(filelocation);
       var base64img = new Buffer(img).toString('base64');
       res.writeHead(200, {

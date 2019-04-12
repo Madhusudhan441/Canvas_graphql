@@ -11,6 +11,7 @@ export default class Files extends Component {
           loaded: 0, 
           folders:[],
           files:[],
+          folderview:"",
           btnvis:"hidden"
         }
         if(localStorage.getItem('stufac')=="faculty"){
@@ -26,6 +27,11 @@ export default class Files extends Component {
         
       }
     }
+    folderviewHandler=(e)=>{
+this.setState({
+  folderview:e.target.value
+})
+    }
     uploadFile=(e)=>{
       const data = new FormData()
         
@@ -33,7 +39,19 @@ export default class Files extends Component {
         console.log(this.state.selectedFile);
         data.append('studentid',localStorage.getItem('loginid'))
        console.log(data)
-        axios.post('http://localhost:3001/uploadfile',data,
+       const data1 = {
+         data:data,
+         foldname:this.state.folderview
+       }
+       
+       console.log("data1",data1)
+       alert("data1")
+        axios.post('http://localhost:3001/uploadfile',data,{
+          params:{
+            courseid:localStorage.getItem('courseid'),
+            foldname:this.state.folderview
+          }
+        },
         {selectedFile: this.state.selectedFile,
         onUploadProgress: ProgressEvent => {
         this.setState({
@@ -58,6 +76,7 @@ export default class Files extends Component {
       
       }
       foldviewfiles=(e)=>{
+        this.state.files=[]
         console.log(e.target.name)
         localStorage.setItem('foldid','\\'+e.target.name)
         axios.defaults.withCredentials = true;
@@ -98,7 +117,7 @@ export default class Files extends Component {
     }
       componentDidMount(){
         axios.defaults.withCredentials = true;
-        axios.get('http://localhost:3001/seeFolders').
+        axios.get('http://localhost:3001/seeFolders',{params:{courseid:localStorage.getItem('courseid')}}).
         then(response => {
               this.setState({
                 folders:response.data
@@ -108,9 +127,25 @@ export default class Files extends Component {
       }
     createfolder=(e)=>{
       
-      const data1={
-        foldname:"./files/"+this.state.foldername
+      var data1={
+        foldname:"./files/"+localStorage.getItem('courseid')
       }
+   axios.post('http://localhost:3001/createfolder',data1)
+      .then((response) => {
+        if(response.status === 200){  
+          console.log("success childddd")
+      //update the state with the response data
+      this.setState({
+          asgmnt_det:response.data
+      });
+      
+     
+    }
+  });
+    
+  var data1={
+    foldname:"./files/"+localStorage.getItem('courseid')+'/'+this.state.foldername
+  }
       axios.post('http://localhost:3001/createfolder',data1)
       .then((response) => {
         if(response.status === 200){  
@@ -133,7 +168,7 @@ export default class Files extends Component {
         <div>
         {console.log(direct.substring(6))}
        
-          <a href="#" name={direct} onClick={this.foldviewfiles} style={{color:"blue"}}>{direct.substring(6)}</a>
+          <a href="#" name={direct} onClick={this.foldviewfiles} style={{color:"blue"}}>{direct.substring(10)}</a>
           
           </div>
         )
@@ -172,6 +207,7 @@ export default class Files extends Component {
 
         <div class="row form-group" style={{height:"60px",visibility:this.state.btnvis}} >
         <div class="col col-sm-2">
+        <input type="text"  onChange={this.folderviewHandler}class="form-control" placeholder="Folder Name"></input>
         <input type="file" name="file_name" id="file_id" onChange={this.handleselectedFile} />
         </div>
         <div class="col col-sm-3">

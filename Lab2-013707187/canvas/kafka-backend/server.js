@@ -16,6 +16,23 @@ mdb.on('open',()=>{
 //var signin = require('./services/signin.js');
 var Books = require('./services/books.js');
 var Login = require('./services/login');
+var getAnnounce = require('./services/getannounce')
+var getannouncedet = require('./services/getannouncedet')
+var getassignment = require('./services/getassignment')
+var getassignmentdet = require('./services/getassignmentdet')
+var getprofile = require('./services/getprofile')
+var getpeople = require('./services/getpeople')
+var getstudents = require('./services/getstudents')
+var getcourses = require('./services/getcourses')
+var getprofessors = require('./services/getprofessors')
+
+
+
+
+
+
+
+
 
 function handleTopicRequest(topic_name,fname){
     //var topic_name = 'root_topic';
@@ -51,3 +68,22 @@ function handleTopicRequest(topic_name,fname){
 //second argument is a function that will handle this topic request
 handleTopicRequest("post_book",Books)
 handleTopicRequest("login", Login);
+handleTopicRequest("getannounce", getAnnounce);
+handleTopicRequest("getannouncedet", getannouncedet);
+handleTopicRequest("getassignment", getassignment);
+handleTopicRequest("getassignmentdet", getassignmentdet);
+handleTopicRequest("getprofile", getprofile);
+handleTopicRequest("getpeople", getpeople);
+handleTopicRequest("getstudents", getstudents);
+handleTopicRequest("getprofessors", getprofessors);
+handleTopicRequest("getcourses", getcourses);
+
+
+
+
+
+
+
+
+
+

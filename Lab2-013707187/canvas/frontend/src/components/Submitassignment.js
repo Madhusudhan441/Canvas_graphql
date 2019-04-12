@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import axios, { post } from 'axios';
 export default class Submitassignment extends Component {
-    state = { selectedFile: null, loaded: 0, }
+    state = { selectedFile: null, loaded: 0,foldername:"" }
 
 handleselectedFile = event => {
 
@@ -14,18 +14,52 @@ loaded: 0,
 })
 
 }
+// folderviewHandler=(e)=>{
+// this.setState({
+//   foldername:e.target.value
+// })
+// }
     canceloption=(e)=>{
         this.props.callbackFromParent()
     }
-    handleUpload =()=> {
+    handleUpload =async()=> {
+   
 
-        const data = new FormData()
+      var data_assign={
+        foldname:"./submissions/"+localStorage.getItem('courseid')
+      }
+         await axios.post('http://localhost:3001/createfolder',data_assign)
+          .then((response) => {
+            // alert("assignment folder created")
+            if(response.status === 200){  
+              console.log("success childddd")
+              alert("created courseid folder")
+              
+      var data_assign={
+        foldname:"./submissions/"+localStorage.getItem('courseid')+'/'+localStorage.getItem('loginid')
+      }
+           axios.post('http://localhost:3001/createfolder',data_assign)
+          .then((response) => {
+            alert("loginid folder created")
+            if(response.status === 200){  
+              console.log("success childddd")
+              var data_assign={
+                foldname:"./submissions/"+localStorage.getItem('courseid')+'/'+localStorage.getItem('loginid')+'/'+localStorage.getItem('assignmentid')
+              }
+                
+                   axios.post('http://localhost:3001/createfolder',data_assign)
+                  .then((response) => {
+                    alert(" assignmentid folder created")
+                    if(response.status === 200){  
+                      const data = new FormData()
         
         data.append('file', this.state.selectedFile)
         console.log(this.state.selectedFile);
-        data.append('studentid',localStorage.getItem('loginid'))
+        // data.append('studentid',localStorage.getItem('loginid'))
        console.log(data)
-        axios.post('http://localhost:3001/upload',data,
+       alert("hello")
+         axios.post('http://localhost:3001/upload',data,
+        {params:{courseid:localStorage.getItem('courseid'),studentid:localStorage.getItem('loginid'),assignmentid:localStorage.getItem('assignmentid')}},
         {selectedFile: this.state.selectedFile,
         onUploadProgress: ProgressEvent => {
         this.setState({
@@ -33,11 +67,40 @@ loaded: 0,
         .then(res => {
         console.log(res.statusText)
         if(res.status === 200){
+          alert("file upload done")
             this.props.callbackFromParent();
         }
         }).catch(error => {
         console.log(error.message);
         })
+                      console.log("success childddd")
+                  //update the state with the response data
+                  // this.setState({
+                  //     asgmnt_det:response.data
+                  // });
+                  
+                 
+                }
+              });
+          //update the state with the response data
+          // this.setState({
+          //     asgmnt_det:response.data
+          // });
+          
+         
+        }
+      });
+          //update the state with the response data
+          // this.setState({
+          //     asgmnt_det:response.data
+          // });
+          
+         
+        }
+      });
+
+
+      //   
         }
         
   render() {
@@ -45,6 +108,8 @@ loaded: 0,
       <div>
         <div class="border" style={{width:"60%"}}>
         <h4>File Upload</h4>
+        {/* <input type="text"  onChange={this.folderviewHandler}class="form-control" placeholder="Folder Name"></input> */}
+        
         <input type="file" name="file_name" id="file_id" onChange={this.handleselectedFile} />
 <div class="lessspace"></div>
 <div>

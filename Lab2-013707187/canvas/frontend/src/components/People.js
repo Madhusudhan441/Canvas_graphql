@@ -7,7 +7,11 @@ export default class People extends Component {
             people:[],
             btnvis:"hidden",
             status:"",
-            status1:""
+            status1:"",
+            prevcount:0,
+            nextcount:2,
+            disablenextstat:"",
+            disableprevstat:""
         }
         if(localStorage.getItem('stufac')=="faculty"){
           this.state.btnvis="visible"
@@ -73,6 +77,34 @@ export default class People extends Component {
       }
     });
     }
+    next=(e)=>{
+      if(this.state.nextcount<this.state.people.length){
+      this.setState({
+        nextcount:this.state.nextcount+2,
+        prevcount:this.state.prevcount+2
+      })
+    }
+      if(this.state.nextcount>=this.state.people.length){
+       
+        alert("no next items")
+
+      }
+      
+
+    }
+    previous=(e)=>{
+      if(this.state.prevcount>1){
+      this.setState({
+        nextcount:this.state.nextcount-2,
+        prevcount:this.state.prevcount-2
+      })
+    }
+      if(this.state.prevcount<=0){  
+        alert("no previous items")
+      }
+     
+
+    }
   componentDidMount(){
         
       const dataq={
@@ -103,8 +135,9 @@ export default class People extends Component {
   render() {
     console.log(this.state.status)
     if(this.state.people.length>0){
-      var getpeople=this.state.people.map(person=>{
-
+      var getpeople=this.state.people.map((person,idx)=>{
+      // alert(idx)
+if(idx>=this.state.prevcount && idx<this.state.nextcount){
           return(
         <tr>
         <td>{person.studentname}</td>
@@ -112,7 +145,9 @@ export default class People extends Component {
         <td><button class="btn btn-primary" onClick={this.dropstud(person)} style={{visibility:this.state.btnvis}}>Drop Student</button></td>
     </tr>
           )
+}
       })
+      
     }
     return (
       <div>
@@ -130,6 +165,9 @@ export default class People extends Component {
                             <tbody>
                                 {/*Display the Tbale row based on data recieved*/}
                                 {getpeople}
+                              <button onClick={this.previous}   class="btn btn-primary" type="button" style={{marginLeft:"100px"}}>Previous</button>
+
+                              <button onClick={this.next}  class="btn btn-primary" type="button" style={{marginLeft:"350px"}}>Next</button>
                             </tbody>
                         </table>
           

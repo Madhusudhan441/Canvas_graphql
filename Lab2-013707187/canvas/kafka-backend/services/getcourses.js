@@ -18,6 +18,10 @@ function handle_request(msg, callback){
                 console.log("in user",results)
                 callback(null,results)
             }
+            else if(results==[]){
+                callback(null,true)
+
+            }
     
         else{
             console.log("null")

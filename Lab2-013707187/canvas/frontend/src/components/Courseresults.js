@@ -68,7 +68,7 @@ export default class Courseresults extends Component {
         
         axios.defaults.withCredentials = true;
         console.log("res",data1)
-        alert("in results")
+        // alert("in results")
         //make a post request with the user data
         axios.post('http://localhost:3001/regcourse',data1)
             .then(response => {
@@ -119,6 +119,7 @@ export default class Courseresults extends Component {
 
   
     if (this.props.data.Courses != null) 
+    // alert("inside results")
         courseResult = this.props.data.Courses.map(course => {
             this.state.coursestatus="Not Enrolled"
             this.state.regbtnflag = "Register"

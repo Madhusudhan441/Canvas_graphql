@@ -1,7 +1,7 @@
 var mongoose = require('mongoose')
 
 const faculty = new mongoose.Schema({
-  _id: {type: String},
+ 
 
   facultyid: {
     type: String,
@@ -58,8 +58,21 @@ const faculty = new mongoose.Schema({
   gender: {
     type:String
     // required: [true, 'password is required,']
-  }
-})
+  },
+  messages:[{
+    studentid:{
+      type:String
+    },
+    messagecontent:[{
+      studentname:{
+        type:String
+      },
+      message:{
+        type:String
+      }
+    }]
+    }
+      ]})
 var Facultydet = mongoose.model('facultydetails',faculty);
 module.exports = Facultydet;
 
