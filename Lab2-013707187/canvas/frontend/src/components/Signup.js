@@ -11,6 +11,7 @@ class Signup extends Component {
         id:"",
         username:"",
         password:"",
+        errormessage:"",
         owner:"student"
     }
 
@@ -40,6 +41,7 @@ signChangeHandler=(e)=>{
 }
 
  signup=async(e)=>{
+   
   console.log("hi")
   let {id,username,password,owner} = this.state
 await this.props.signup(id,username,password,owner)
@@ -82,6 +84,7 @@ if (this.props.output == 200) {
 </div>
 <div class = "border">
             <form>
+              <label>{this.state.errormessage}</label>
                 <h5 class="text-center" style={{color:"#5E5E5E",fontWeight:"bold"}}>Sign up</h5>       
                 <div class="form-group">
                     <input type="number"  onChange={this.signChangeHandler} name="id" class="form-control" placeholder="SJSU ID Number" required="required"></input>

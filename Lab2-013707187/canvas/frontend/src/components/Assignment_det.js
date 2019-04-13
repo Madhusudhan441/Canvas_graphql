@@ -212,7 +212,9 @@ this.setState({
 
             <div>
                 <h3>{assignment.name}
+               
                 <button onClick={this.popsubmit} class="btn btn-primary" style={{float:"right",visibility:this.state.altersub}} type="button">{this.state.btntext}</button>
+               
                 </h3>
                
               
