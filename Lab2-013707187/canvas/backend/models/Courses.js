@@ -63,6 +63,14 @@ const coursedetails = new mongoose.Schema({
           // required: [true, 'password is required,']
         }
       }],
+      permissionnumbers:[{
+      permissionnumber:{
+        type:Number
+      },
+      status:{
+        type:String
+      }
+      }],
       studentsregistered:[{
         studentid:{
           type:String

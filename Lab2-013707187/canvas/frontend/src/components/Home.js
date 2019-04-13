@@ -18,33 +18,24 @@ export default class Home extends Component {
         
     }  
     dragstart=(e)=>{
-      // alert("drag start")
-      // e.preventDefault();
+      
 
       e.dataTransfer.setData("txt1", e.target.id);
       this.setState({
         temp:1
       })
-      // var idx1 = e.target.id
-      // var idx2 = this.state.courses.length -1;
-      // console.log(idx1,idx2)
-      // var b = this.state.courses[idx1];
-      // this.state.courses[idx1] = this.state.courses[idx2];
-      // this.state.courses[idx2] = b;
-      // this.setState({
-      //   temp:1
-      // })
+   
       console.log("courseres",this.state.courses)
     }
     dragend=(e)=>{
     
    
       e.preventDefault();
-      // alert("hi")
+     
      
     }
     drop=(val,e)=>{
-      // alert("hi")
+
       e.preventDefault();
       var idx1 = e.dataTransfer.getData("txt1");
       var idx2 = val;

@@ -105,6 +105,9 @@ var getStudents = require('./apis/getStudents')
 var getMessages = require('./apis/getMessages')
 var sendmessage = require('./apis/sendmessage')
 var getprofessors = require('./apis/getprofessors')
+var generatepermissioncodes = require('./apis/generatepermission')
+
+generatepermissioncodes
 
 
 app.use('/', login)
@@ -132,6 +135,9 @@ app.use('/',getStudents)
 app.use('/',getMessages)
 app.use('/',sendmessage)
 app.use('/',getprofessors)
+app.use('/',generatepermissioncodes)
+
+
 
 
 // courseresult=[]
