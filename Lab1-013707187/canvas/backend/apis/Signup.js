@@ -37,6 +37,7 @@ router.post('/signup',function(req,res){
 }, function (err, user) {
     if (user) {
         console.log("userid already exists")
+        res.send(400).send();
     }
     else{
         console.log("in error")
@@ -73,8 +74,6 @@ router.post('/signup',function(req,res){
         const FacultyLogin  = require('../models/Facultydetails');
 
         var userSchema = new FacultyLogin({
-   
-
            facultyid:req.body.loginid,
            username:req.body.username,
            password:hash,
@@ -83,7 +82,7 @@ router.post('/signup',function(req,res){
            phonenumber:"",
            about:"",
            city:"",
-           country:"",
+           country:"",        
            company:"",
            school:"",
            hometown:"",

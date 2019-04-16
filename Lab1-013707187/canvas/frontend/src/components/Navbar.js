@@ -121,7 +121,7 @@ class Navbar extends Component {
     // alert(this.state.stat)
     // alert("hellohey"+localStorage.getItem('logsuccess'))
     // alert("in navbar")
-    if(localStorage.getItem('logsuccess')=="false"){
+    if(localStorage.getItem('logsuccess')!="true"){
       // localStorage.setItem('logsuccess',false)
       // alert("in navbar")
       // alert("hellohey"+localStorage.getItem('logsuccess'))
@@ -176,7 +176,7 @@ class Navbar extends Component {
               <button data-effect="st-effect-1" onClick={this.addClass} class="appWh "><i class="fa fa-users fa-2x"></i><span><br></br>Groups</span></button></li>
 
             <li class="colorTabs"><button class="appWh"><i class="fa fa-calendar-alt fa-2x"></i><span><br></br> Calendar </span></button></li>
-            <a href="/inbox"><li class="colorTabs"><button class="appWh"><i class="fal fa-envelope fa-2x"></i><span><br></br> Inbox   </span></button></li></a>
+            <a href="/inbox"> <li class="colorTabs"><button class="appWh"><i class="fal fa-envelope fa-2x"></i><span><br></br> Inbox   </span></button></li></a>
            <li class="colorTabs"><button class="appWh"><i class="fal fa-question-circle fa-2x"></i><span><br></br> Help    </span></button></li>
             <li class="colorTabs"><button class="appWh"><i class="fa fa-book fa-2x"></i><span><br></br> Library   </span></button></li>
             <li class="colorTabs"><button class="appWh"><i class="fal fa-arrow-to-left fa-2x"></i></button></li>

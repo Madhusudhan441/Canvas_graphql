@@ -5,7 +5,7 @@ var passport = require('passport');
 
 var requireAuth = passport.authenticate('jwt', {session: false});
 router.post('/updateprofile',requireAuth,function(req,res){
-    console.log("hi",req.body)
+    console.log("update profile body",req.body)
     if(req.body.stufac==="faculty"){
  const Facultydetails  = require('../models/Facultydetails');
 

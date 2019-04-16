@@ -14,6 +14,10 @@ var config = require('./config/settings');
 var jwt = require('jsonwebtoken');
 var passport = require('passport');
 
+
+ 
+
+
 // var crypt = require('./app/crypt');
 // var db = require('./app/db');
 var requireAuth = passport.authenticate('jwt', {session: false});
@@ -105,6 +109,9 @@ var getStudents = require('./apis/getStudents')
 var getMessages = require('./apis/getMessages')
 var sendmessage = require('./apis/sendmessage')
 var getprofessors = require('./apis/getprofessors')
+var generatepermissioncodes = require('./apis/generatepermission')
+var updategrades = require('./apis/updategrades')
+generatepermissioncodes
 
 
 app.use('/', login)
@@ -132,6 +139,10 @@ app.use('/',getStudents)
 app.use('/',getMessages)
 app.use('/',sendmessage)
 app.use('/',getprofessors)
+app.use('/',generatepermissioncodes)
+app.use('/',updategrades)
+
+
 
 
 // courseresult=[]

@@ -17,12 +17,12 @@ export default class Graderesults extends Component {
                 <tr>
                 <td >{grade.studentid}</td>
                 <td >{grade.courseid}</td>
-                <td>{grade.name}</td>
-                <td>{grade.due.substring(0,10)}</td>
-                <td> </td>
+                <td>{grade.assignmentid}</td>
+                {/* <td>{grade.due}</td> */}
+                {/* <td> </td> */}
                 
                 <td>{grade.score}</td>
-                <td>{grade.marks}</td>
+                {/* <td>{grade.marks}</td> */}
             </tr>
             )
         })
@@ -37,10 +37,10 @@ export default class Graderesults extends Component {
                                 <th >StudentId</th>
                                 <th >CourseId</th>
                                 <th>Name</th>
-                                <th>Due</th>
-                                <th>Status</th>
+                                {/* <th>Due</th> */}
+                                {/* <th>Status</th> */}
                                 <th>Score</th>
-                                <th>Out of</th>
+                                {/* <th>Out of</th> */}
                             </tr>
                         </thead>
                         <tbody>

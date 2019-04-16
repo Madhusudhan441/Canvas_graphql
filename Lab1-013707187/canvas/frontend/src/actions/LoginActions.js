@@ -57,6 +57,7 @@ export const signup = (id, username, password, owner) => async (dispatch) => {
         })
         .catch((error) => {
             // alert("error")
+            alert("user already exists")
             console.log("in error")
             dispatch({
                 //ERROR 400 status      
