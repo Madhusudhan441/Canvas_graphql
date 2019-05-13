@@ -56,7 +56,7 @@ export default class Coursehome extends Component {
                     <hr></hr>
                         <div class="container">
                        <div class="col col-sm-2">
-                            <ul class="nav  navclass " style={{marginLeft:"-30%"}}>
+                            <ul class="nav  navclass" style={{marginLeft:"-30%"}}>
                             <li><a class="click" onClick={this.semiCourse.bind(this,<Chome />)}><span class="colspan">Home</span> </a></li>
                                <li><a class="click" onClick={this.semiCourse.bind(this,<Announcements callbackFromParent={this.myCallback.bind(this,<Announcements_det />)}/>)}><span class="colspan">Announcements</span> </a></li>
                              

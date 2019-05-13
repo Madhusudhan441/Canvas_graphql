@@ -43,7 +43,7 @@ router.post('/login',function(req,res){
                         })
             
               
-                res.status(200).json({ success: true, token:token, email : req.body.username, cookie:"user"});
+                res.status(200).json({ success: true, token:token, username : result.username, cookie:"user"});
 
                     }
 

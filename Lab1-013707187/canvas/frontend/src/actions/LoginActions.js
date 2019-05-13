@@ -15,6 +15,8 @@ export const submitLogin = (username, password, stufac) => dispatch => {
             // alert("done")
 
             localStorage.setItem('token',response.data.token)
+            localStorage.setItem('stuname',response.data.username)
+
             dispatch({
                 type: LOGIN_CHECK,
                 payload: response.status,

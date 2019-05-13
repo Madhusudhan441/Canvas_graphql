@@ -1,8 +1,6 @@
 var mongoose = require('mongoose')
 
 const faculty = new mongoose.Schema({
- 
-
   facultyid: {
     type: String,
     required: [true, 'Studentid is required']

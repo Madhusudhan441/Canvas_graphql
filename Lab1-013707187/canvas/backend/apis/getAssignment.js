@@ -43,8 +43,6 @@ router.post('/getassignment',function(req,res){
                res.end(JSON.stringify([assignment]))
              }
             })
-            
-          
         }
           else{
            res.writeHead(400, {
