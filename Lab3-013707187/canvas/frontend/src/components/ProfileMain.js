@@ -164,21 +164,21 @@ import {withApollo} from 'react-apollo';
         stufac:localStorage.getItem('stufac')
       }
   
-      await this.props.client.query({
-        query : getProfile,
-        variables: {
-            loginid : localStorage.getItem('loginid'),
-            stufac:    localStorage.getItem('stufac')
-        }
-    })
-    .then(async (response)=>{
-console.log("res",response)
-if(response.data.getProfile){
-this.setState({
-          profile:response.data.getProfile.result
-      })
-    }
-    })
+//       await this.props.client.query({
+//         query : getProfile,
+//         variables: {
+//             loginid : localStorage.getItem('loginid'),
+//             stufac:    localStorage.getItem('stufac')
+//         }
+//     })
+//     .then(async (response)=>{
+// console.log("res",response)
+// if(response.data.getProfile){
+// this.setState({
+//           profile:response.data.getProfile.result
+//       })
+//     }
+//     })
     //   axios.defaults.withCredentials = true;
     
     //     axios.post('http://localhost:3001/getprofile',dataq,
